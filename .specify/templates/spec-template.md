@@ -15,9 +15,14 @@
   Assign priorities (P1, P2, P3, etc.) to each story, where P1 is the most critical.
   Think of each story as a standalone slice of functionality that can be:
   - Developed independently
-  - Tested independently
+  - Tested independently (following TDD: write tests FIRST, ensure they FAIL, then implement)
   - Deployed independently
   - Demonstrated to users independently
+  
+  For Teacher AI Agent:
+  - P1 stories should focus on core teaching flow (outline creation, lesson delivery)
+  - Each story should work within CLI interface
+  - Consider educational flow and context maintenance
 -->
 
 ### User Story 1 - [Brief Title] (Priority: P1)

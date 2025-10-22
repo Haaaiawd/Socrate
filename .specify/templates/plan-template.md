@@ -31,7 +31,28 @@
 
 *GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
 
-[Gates determined based on constitution file]
+**Principle Compliance Checklist**:
+
+- [ ] **Markdown-First Storage**: Does feature use `.md` files for persistence? Any database dependencies?
+- [ ] **CLI-First Interface**: Is feature accessible via CLI commands? Are commands properly structured?
+- [ ] **Test-Driven Development**: Are tests written before implementation? Is TDD workflow documented?
+- [ ] **AI-Aware Code Quality**: Are functions small (<50 lines)? Are type hints used? Are docstrings complete?
+- [ ] **Incremental MVP Approach**: Are user stories prioritized (P1/P2/P3)? Is MVP scope clearly defined?
+- [ ] **Educational Flow Integrity**: Does feature respect pedagogical flow? Is teaching context maintained?
+- [ ] **Observability & Debuggability**: Is logging implemented? Are error messages actionable?
+
+**Domain Constraints**:
+
+- [ ] Textbook processing follows supported formats (Markdown, plain text for MVP)
+- [ ] Learning plan generates hierarchical outline (Course → Chapters → Sections → Knowledge Points)
+- [ ] Lesson delivery uses conversational AI with educational prompts
+- [ ] Progress tracking persists across sessions
+
+**Quality Gates**:
+
+- [ ] Code coverage target: 80% minimum
+- [ ] All tests passing before merge
+- [ ] Complexity justifications documented if principles violated
 
 ## Project Structure
 

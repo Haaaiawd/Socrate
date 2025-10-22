@@ -7,9 +7,15 @@ description: "Task list template for feature implementation"
 **Input**: Design documents from `/specs/[###-feature-name]/`
 **Prerequisites**: plan.md (required), spec.md (required for user stories), research.md, data-model.md, contracts/
 
-**Tests**: The examples below include test tasks. Tests are OPTIONAL - only include them if explicitly requested in the feature specification.
+**Tests**: Tests are MANDATORY following TDD principle. Write tests FIRST, ensure they FAIL (Red), then implement (Green), then refactor.
 
 **Organization**: Tasks are grouped by user story to enable independent implementation and testing of each story.
+
+**AI-Aware Guidelines**:
+- Keep functions small (<50 lines) for better AI comprehension
+- Use absolute file paths in task descriptions
+- Include type hints and docstrings for all modules
+- Each task should be atomic and clearly scoped
 
 ## Format: `[ID] [P?] [Story] Description`
 - **[P]**: Can run in parallel (different files, no dependencies)
@@ -76,12 +82,21 @@ Examples of foundational tasks (adjust based on your project):
 
 **Independent Test**: [How to verify this story works on its own]
 
-### Tests for User Story 1 (OPTIONAL - only if tests requested) ⚠️
+### Tests for User Story 1 (MANDATORY - TDD Required) 🔴
 
-**NOTE: Write these tests FIRST, ensure they FAIL before implementation**
+**TDD WORKFLOW (NON-NEGOTIABLE)**:
+1. Write these tests FIRST
+2. Run tests → verify they FAIL (Red phase)
+3. User approves test coverage
+4. Implement feature → tests pass (Green phase)
+5. Refactor → tests still pass (Refactor phase)
 
 - [ ] T010 [P] [US1] Contract test for [endpoint] in tests/contract/test_[name].py
+  - Verify test FAILS before implementation
+  - Target: 80%+ coverage for this component
 - [ ] T011 [P] [US1] Integration test for [user journey] in tests/integration/test_[name].py
+  - Verify test FAILS before implementation
+  - Test complete user journey end-to-end
 
 ### Implementation for User Story 1
 
@@ -102,10 +117,14 @@ Examples of foundational tasks (adjust based on your project):
 
 **Independent Test**: [How to verify this story works on its own]
 
-### Tests for User Story 2 (OPTIONAL - only if tests requested) ⚠️
+### Tests for User Story 2 (MANDATORY - TDD Required) 🔴
+
+**TDD WORKFLOW**: Write → Fail → Approve → Implement → Pass → Refactor
 
 - [ ] T018 [P] [US2] Contract test for [endpoint] in tests/contract/test_[name].py
+  - Verify FAILS before implementation
 - [ ] T019 [P] [US2] Integration test for [user journey] in tests/integration/test_[name].py
+  - Verify FAILS before implementation
 
 ### Implementation for User Story 2
 
@@ -124,10 +143,14 @@ Examples of foundational tasks (adjust based on your project):
 
 **Independent Test**: [How to verify this story works on its own]
 
-### Tests for User Story 3 (OPTIONAL - only if tests requested) ⚠️
+### Tests for User Story 3 (MANDATORY - TDD Required) 🔴
+
+**TDD WORKFLOW**: Write → Fail → Approve → Implement → Pass → Refactor
 
 - [ ] T024 [P] [US3] Contract test for [endpoint] in tests/contract/test_[name].py
+  - Verify FAILS before implementation
 - [ ] T025 [P] [US3] Integration test for [user journey] in tests/integration/test_[name].py
+  - Verify FAILS before implementation
 
 ### Implementation for User Story 3
 
