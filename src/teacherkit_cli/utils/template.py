@@ -126,9 +126,9 @@ def copy_prompts_to_project(project_dir: Path) -> bool:
         True if successful
     """
     try:
-        # Source prompts from package .vscode/prompts/
+        # Source prompts from package .github/prompts/ (development repo)
         package_root = Path(__file__).parent.parent.parent.parent
-        source_dir = package_root / ".vscode" / "prompts"
+        source_dir = package_root / ".github" / "prompts"
         target_dir = project_dir / ".github" / "prompts"
         
         # Create target directory

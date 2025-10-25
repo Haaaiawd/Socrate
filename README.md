@@ -1,149 +1,397 @@
-# TeacherKit 🎓
+# TeacherKit - AI-Powered Socratic Teaching Assistant
 
-> AI-powered Socratic teaching system for interactive learning
+> **Transform any programming resource into personalized, interactive lessons with the power of AI.**
 
-[![Python 3.11+](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/)
-[![PowerShell 7+](https://img.shields.io/badge/powershell-7.0+-blue.svg)](https://github.com/PowerShell/PowerShell)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-
-TeacherKit helps students learn by uploading textbooks and engaging in AI-guided Socratic dialogue. The system generates structured learning plans, extracts knowledge points, and asks guiding questions—never giving direct answers.
-
-## Features
-
-- 📚 **Textbook Parsing**: Upload textbooks and get structured outlines
-- 📖 **Chapter Preparation**: Auto-extract knowledge points and generate questions
-- 💬 **Socratic Dialogue**: AI guides learning with questions, not answers
-- 📊 **Progress Tracking**: Monitor learning progress across chapters
-- 📝 **Note Taking**: Mark and save text highlights during lessons
-
-## 核心原则
-
-本项目遵循严格的开发原则,详见 [项目宪章](.specify/memory/constitution.md):
-
-- **Markdown-First Storage**: 所有数据以 `.md` 文件存储,简单、可移植、版本友好
-- **CLI-First Interface**: 纯命令行交互,无 GUI 开销,专注核心功能
-- **Test-Driven Development**: 严格 TDD 流程,测试先行,80% 代码覆盖率要求
-- **AI-Aware Code Quality**: 代码结构适配 AI 协作,小函数、类型提示、完整文档
-- **Incremental MVP Approach**: 优先级驱动,P1 功能构成 MVP,避免功能蔓延
-- **Educational Flow Integrity**: 尊重教学法,维护学习上下文,支持渐进式学习
-- **Observability & Debuggability**: 结构化日志,可调试的 CLI,错误信息可操作
-
-## 快速开始
-
-### 安装
-
-```bash
-# 克隆仓库
-git clone https://github.com/yourusername/teacher-ai-agent.git
-cd teacher-ai-agent
-
-# 安装依赖 (待实现)
-pip install -r requirements.txt
-```
-
-### 基本使用
-
-```bash
-# 创建学习计划
-teacher create-outline --textbook path/to/textbook.md
-
-# 开始教学
-teacher start-lesson --chapter 1
-
-# 查看进度
-teacher status
-
-# 查看笔记
-teacher notes
-```
-
-## 项目结构
-
-```
-Teacher/
-├── .specify/                 # 项目规范和模板
-│   ├── memory/
-│   │   └── constitution.md  # 项目宪章
-│   └── templates/           # 功能规范模板
-├── src/                     # 源代码 (待创建)
-│   ├── models/             # 数据模型
-│   ├── services/           # 业务逻辑
-│   ├── cli/                # 命令行接口
-│   └── lib/                # 工具库
-├── tests/                   # 测试 (待创建)
-│   ├── contract/           # 契约测试
-│   ├── integration/        # 集成测试
-│   └── unit/               # 单元测试
-├── data/                    # 数据存储 (待创建)
-│   ├── outlines/           # 教学大纲
-│   ├── chapters/           # 章节内容
-│   └── notes/              # 学习笔记
-└── logs/                    # 日志文件 (待创建)
-```
-
-## 开发指南
-
-### 开发流程
-
-1. **规范化**: 使用 `.specify/templates/` 中的模板创建功能规范
-2. **测试先行**: 编写测试 → 验证失败 → 用户审批 → 实现功能
-3. **代码质量**: 遵循 AI-Aware 原则,保持代码清晰、类型安全
-4. **宪章检查**: 每个功能必须通过宪章合规性检查
-
-### 命令参考
-
-功能规范相关命令(通过 `.github/prompts/` 中的 prompt 文件):
-
-- `speckit.constitution.prompt.md`: 更新项目宪章
-- `speckit.specify.prompt.md`: 创建功能规范
-- `speckit.plan.prompt.md`: 生成实现计划
-- `speckit.tasks.prompt.md`: 分解任务列表
-- `speckit.implement.prompt.md`: 执行实现
-
-### 贡献指南
-
-1. 所有 PR 必须通过自动化测试(单元测试 + 集成测试)
-2. 代码覆盖率不得低于 80%
-3. 核心逻辑变更需要至少一名同行评审
-4. 必须验证宪章合规性(参考 PR 模板检查清单)
-
-## 技术栈
-
-- **语言**: Python 3.11+
-- **CLI 框架**: Click / Typer (待定)
-- **AI 集成**: OpenAI API / Claude API
-- **存储**: Markdown 文件 + YAML 元数据
-- **测试**: pytest
-- **日志**: Python logging 模块
-
-## 路线图
-
-### MVP (v0.1.0) - P1 功能
-- [ ] 教材解析(Markdown/纯文本)
-- [ ] 教学大纲生成
-- [ ] 基础对话式教学
-- [ ] 进度跟踪
-
-### v0.2.0 - P2 功能
-- [ ] 自动搜索补充材料
-- [ ] 图片引用支持
-- [ ] 文本标记和笔记管理
-
-### v0.3.0 - P3 功能
-- [ ] 自定义教学节奏
-- [ ] 多种教学模式
-- [ ] 学习分析和报告
-
-## 许可证
-
-(待定)
-
-## 联系方式
-
-(待定)
+TeacherKit is a **prompt-first** AI teaching assistant that uses Socratic dialogue to guide you through programming concepts at your own pace. Unlike traditional tutorials, it doesn't just explain—it **asks you questions** to help you discover answers yourself.
 
 ---
 
-**项目宪章版本**: 1.0.0 | **最后更新**: 2025-10-21
+## ✨ What Makes TeacherKit Special?
 
-查看完整的项目原则和治理规则,请参考 [.specify/memory/constitution.md](.specify/memory/constitution.md)
+### 🧠 Socratic Teaching Method
+- **Question-driven learning**: Instead of lectures, you'll answer carefully crafted questions that guide you to understanding
+- **3-layer questioning**: Conceptual understanding → Principle exploration → Real-world application
+- **Adaptive dialogue**: The AI adjusts based on your responses
+
+### 📚 Flexible Learning Modes
+- **File-based learning**: Attach a textbook, PDF, or Markdown file → instant structured lesson plan
+- **Topic-based learning**: Just describe what you want to learn → AI creates a custom outline
+- **Progress tracking**: Pick up exactly where you left off, even days later
+
+### 🏋️ Hands-On Practice
+- **Auto-generated exercises**: Practice problems appear naturally after every 2-3 concepts
+- **TODO-driven coding**: Fill in the blanks with guidance, not frustration
+- **Socratic code review**: When you submit code, the AI asks diagnostic questions instead of giving corrections
+
+### 📊 Seamless Session Management
+- **Automatic progress saving**: After every concept, every exercise, no manual saves needed
+- **Smart resumption**: Return after a break → choose to continue, get a recap, or start fresh
+- **Proactive checkpoints**: Gentle reminders to take breaks after 1 hour of learning
+
+---
+
+## � Quick Start
+
+### Prerequisites
+
+1. **Python 3.11+** installed ([download here](https://www.python.org/downloads/))
+2. **An AI coding assistant** (one of):
+   - [GitHub Copilot](https://github.com/features/copilot) in VS Code
+   - [Cursor](https://cursor.sh/)
+   - [Claude Code](https://claude.ai/) (via API)
+3. **File attachment support** in your AI platform (for file-based learning)
+
+### Installation
+
+```bash
+# Install TeacherKit CLI using uv (recommended)
+uv tool install teacherkit
+
+# Or using pip
+pip install teacherkit
+```
+
+### Initialize Your Learning Project
+
+```bash
+# Create a new learning workspace
+teacherkit init my-python-journey
+
+# This creates:
+# my-python-journey/
+#   .github/prompts/          ← AI prompt templates
+#   data/
+#     outlines/               ← Generated lesson plans
+#     chapters/               ← Prepared knowledge points
+#     exercises/              ← Practice code files
+#     progress.md             ← Your learning journey
+```
+
+---
+
+## 📖 How to Use TeacherKit
+
+### Scenario 1: Learning from a File (Textbook, PDF, Markdown)
+
+**Step 1**: Attach your file to the AI chat
+```
+[Attach: python-fundamentals.pdf]
+```
+
+**Step 2**: Generate an outline
+```
+/teacherkit.outline
+```
+
+**AI Response**:
+```
+📚 I've analyzed your textbook! Here's your learning plan:
+
+Chapter 1: Python Basics (3-4 hours)
+├── 1.1 Variables and Data Types (30 min)
+│   ├── KP-1.1.1: Variable assignment and naming
+│   ├── KP-1.1.2: Numeric types (int, float)
+│   └── KP-1.1.3: String operations
+└── 1.2 Control Flow (45 min)
+    └── ... [more]
+
+Saved to: data/outlines/python-fundamentals-outline.md
+Ready to start? Run /teacherkit.prepare next!
+```
+
+**Step 3**: Prepare knowledge points
+```
+/teacherkit.prepare
+```
+
+**AI Response**:
+```
+✅ Prepared 18 knowledge points with:
+- Core definitions
+- Code examples
+- Socratic questions (3 layers each)
+- Analogies and comparison tables
+
+Saved to: data/chapters/python-fundamentals-prepared.md
+Let's begin! Run /teacherkit.lesson
+```
+
+**Step 4**: Start interactive learning
+```
+/teacherkit.lesson
+```
+
+**AI Response** (Socratic dialogue begins):
+```
+🎓 Welcome to your Python journey!
+
+Today we'll explore: Variables and Data Types (30 min)
+
+Let's start with a question:
+
+Imagine you have a box where you can store things. In programming, 
+we call this a "variable."
+
+🤔 Question 1: If I told you I have a box labeled "age" and it 
+contains the number 25, what do you think happens if I later put 
+the number 30 in the same box?
+
+(Take a moment to think, then share your answer!)
+```
+
+**Step 5**: Practice when offered
+```
+[After 2-3 concepts, AI says:]
+
+Great progress! Time for hands-on practice.
+
+I've created: data/exercises/practice-variables-01.py
+
+Open it, fill in the TODOs, and submit when ready!
+```
+
+**Example Exercise File**:
+```python
+"""
+Exercise: Variable Reassignment and Type Checking
+
+Your task: Complete the TODOs below to practice variable basics.
+"""
+
+# TODO 1: Create a variable 'name' and assign your name as a string
+
+
+# TODO 2: Create a variable 'age' and assign your age as an integer
+
+
+# TODO 3: Reassign 'age' to a new value (e.g., age + 1)
+
+
+# START CODE (Your solution)
+
+# END CODE
+
+# Test cases (don't modify)
+assert isinstance(name, str), "name should be a string"
+assert isinstance(age, int), "age should be an integer"
+print(f"✅ All tests passed! {name} is {age} years old.")
+```
+
+---
+
+### Scenario 2: Learning from a Topic Description
+
+**Step 1**: Describe what you want to learn
+```
+/teacherkit.outline "I want to understand Python list comprehensions"
+```
+
+**AI Response**:
+```
+📚 Custom Lesson Plan: List Comprehensions
+
+**Difficulty**: Intermediate  
+**Estimated Time**: 20-30 minutes
+
+Topic 1: Foundations (10 min)
+├── KP-1.1: Basic list operations review
+├── KP-1.2: The concept of "comprehension"
+└── KP-1.3: Syntax breakdown: [expression for item in iterable]
+
+Topic 2: Practical Applications (15 min)
+├── KP-2.1: Filtering with conditions
+├── KP-2.2: Transforming data
+└── KP-2.3: Nested comprehensions
+
+[Rest of steps same as Scenario 1...]
+```
+
+---
+
+### Scenario 3: Resuming After a Break
+
+```
+[Open chat, run:]
+/teacherkit.lesson
+```
+
+**AI Response**:
+```
+🎓 Welcome Back!
+
+**Last Session**: October 23, 2025 at 3:45 PM  
+**Time Since Last Session**: 2 days
+
+**Completed So Far**: 8 knowledge points (44% progress)
+- KP-1.1.1: Variable assignment
+- KP-1.1.2: Numeric types
+- ... [recent KPs]
+
+**Next Up**: KP-1.3.1: If/else statements
+
+---
+
+How would you like to proceed?
+
+**Option A**: Continue from last position (jump right in)
+**Option B**: Quick recap, then continue (5-min review)
+**Option C**: Start fresh with a new topic
+
+(Just say "A", "B", or "C"!)
+```
+
+---
+
+## 🏗️ Architecture Overview
+
+### Prompt-First Design
+
+TeacherKit is **not a traditional CLI tool**. It's a collection of **AI prompt templates** that teach you through conversation:
+
+```
+CLI (One-Time Setup)          AI Prompts (The Real Teachers)
+├── teacherkit init           ├── /teacherkit.outline
+│   └── Sets up folders       │   └── Analyzes file/topic → creates lesson plan
+└── teacherkit (no args)      ├── /teacherkit.prepare
+    └── Shows help            │   └── Elaborates concepts → adds Socratic questions
+                              ├── /teacherkit.lesson
+                              │   └── Interactive teaching dialogue
+                              ├── /teacherkit.practice
+                              │   └── Generates exercises with TODOs
+                              └── /teacherkit.check
+                                  └── Quality validation (optional)
+```
+
+### Data Storage
+
+Everything is stored in **Markdown files** with YAML frontmatter:
+
+```
+data/
+├── outlines/
+│   └── [topic]-outline.md            # Learning plan with chapter structure
+├── chapters/
+│   └── [topic]-prepared.md           # Elaborated knowledge points
+├── exercises/
+│   ├── practice-[topic]-01.py        # Practice code files
+│   └── exercises-meta.md             # Exercise catalog
+└── progress.md                       # Your learning progress (auto-saved)
+```
+
+**No database required!** All files are human-readable and editable.
+
+---
+
+## 🎯 Feature Highlights
+
+### 📂 File Attachment Learning
+- **Supported formats**: Markdown (`.md`), Plain text (`.txt`), PDF (`.pdf`)
+- **File size**: Up to 50MB (larger files → chunking suggestions)
+- **Multiple files**: Attach multiple chapters → unified lesson plan
+
+### 💬 Topic-Based Learning
+- **Broad topics**: "learn Python" → AI asks clarifying questions
+- **Specific topics**: "list comprehensions" → focused 15-20 min lesson
+- **Adaptive outlining**: AI adjusts depth based on your description
+
+### 🏋️ Practice Exercises
+- **Auto-positioned**: After every 2-3 knowledge points
+- **3 difficulty levels**:
+  - Level 1: 3-5 lines (fill-in-the-blank)
+  - Level 2: 10-15 lines (guided problem-solving)
+  - Level 3: 20-30 lines (comprehensive application)
+- **Graduated hints**: Struggle? Get conceptual hints first, then specific ones
+- **Socratic code review**: AI asks "Why did you choose this approach?" instead of "This is wrong"
+
+### 📊 Progress Tracking
+- **Automatic saves**: After every concept, exercise, or pause
+- **Session resumption**: Choose to continue, recap, or start fresh
+- **Proactive checkpoints**: Every 5 concepts → progress summary
+- **Long break support**: Return after days → quick review offered
+
+---
+
+## 🤝 Contributing
+
+### Modifying Prompt Templates
+
+All teaching behavior is defined in `.github/prompts/`:
+
+```
+.github/prompts/
+├── teacherkit.outline.prompt.md      # Lesson plan generation
+├── teacherkit.prepare.prompt.md      # Knowledge point elaboration
+├── teacherkit.lesson.prompt.md       # Socratic teaching dialogue (850+ lines!)
+├── teacherkit.practice.prompt.md     # Exercise generation
+└── teacherkit.check.prompt.md        # Quality validation
+```
+
+**To customize teaching style**:
+1. Edit the relevant `.prompt.md` file
+2. Re-run `teacherkit init` to copy updated prompts
+3. Test with a new learning session
+
+**No coding required!** Just modify the Markdown templates.
+
+### Manual Testing
+
+Since TeacherKit is AI-driven, testing requires real AI platforms:
+
+1. **Install from source**:
+   ```bash
+   git clone https://github.com/yourusername/teacherkit.git
+   cd teacherkit
+   uv pip install -e .
+   ```
+
+2. **Run acceptance scenarios** (see `specs/002-simplify-teaching-flow/tasks.md` → T016):
+   - Test file attachment → outline generation
+   - Test topic description → outline generation
+   - Test practice exercise workflow
+   - Test session pause/resume
+   - Test edge cases (large files, syntax errors, off-topic submissions)
+
+3. **Check outputs**:
+   - `data/outlines/` - Verify lesson plans have chapters/topics/KPs
+   - `data/chapters/` - Verify Socratic questions present (3 layers)
+   - `data/exercises/` - Verify TODO markers, test cases, hints
+   - `data/progress.md` - Verify auto-save after each concept
+
+---
+
+## 📚 Additional Resources
+
+- **Detailed Spec**: See `specs/002-simplify-teaching-flow/spec.md` for full behavior definitions
+- **Command Contracts**: See `specs/002-simplify-teaching-flow/contracts/` for detailed command specs
+- **Troubleshooting**: See `docs/troubleshooting.md` for common errors and solutions
+
+---
+
+## 📜 License
+
+MIT License - see [LICENSE](LICENSE) file for details.
+
+---
+
+## 🙏 Acknowledgments
+
+Built with:
+- [Typer](https://typer.tiangolo.com/) - Beautiful CLI framework
+- [Rich](https://rich.readthedocs.io/) - Terminal formatting
+- [OpenAI Principles](https://openai.com/) - Socratic teaching inspiration
+
+Powered by your favorite AI coding assistant:
+- GitHub Copilot
+- Cursor
+- Claude Code
+
+---
+
+**Ready to transform your learning?**
+
+```bash
+teacherkit init my-learning-journey
+# Then attach a file or describe a topic + /teacherkit.outline
+```
+
+*Happy learning! 🎓✨*

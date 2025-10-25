@@ -186,7 +186,7 @@ def _init_git_repository(project_dir: Path):
     
     if repo:
         # Stage all created files
-        repo.index.add([".specify", ".vscode", "data", "logs"])
+        repo.index.add([".specify", ".github", "data", "logs"])
         
         # Create initial commit
         repo.index.commit("chore: initialize TeacherKit project\n\nCreated by `teacherkit init`")
