@@ -38,12 +38,12 @@ def copy_templates_to_project(project_dir: Path) -> bool:
             "chapter-template.md",
             "outline-template.md",
             "progress-template.md",
-            "teaching-prompt-template.md"
+            "ipynb-template.ipynb"  # Jupyter Notebook practice template
         }
         
         # Copy filtered template files
         if source_dir.exists():
-            for template_file in source_dir.glob("*.md"):
+            for template_file in source_dir.iterdir():
                 if template_file.name in allowed_templates:
                     target_file = target_dir / template_file.name
                     shutil.copy2(template_file, target_file)
@@ -147,4 +147,51 @@ def copy_prompts_to_project(project_dir: Path) -> bool:
     
     except Exception as e:
         print(f"Error copying prompts: {e}")
+        return False
+
+
+def copy_scripts_to_project(project_dir: Path) -> bool:
+    """
+    Copy PowerShell automation scripts to project .specify/scripts/powershell/ directory
+    
+    Args:
+        project_dir: Project root directory
+        
+    Returns:
+        True if successful
+    """
+    try:
+        # Source scripts from package .specify/scripts/powershell/
+        package_root = Path(__file__).parent.parent.parent.parent
+        source_dir = package_root / ".specify" / "scripts" / "powershell"
+        target_dir = project_dir / ".specify" / "scripts" / "powershell"
+        
+        # Create target directory
+        target_dir.mkdir(parents=True, exist_ok=True)
+        
+        # Core automation scripts that AI uses
+        required_scripts = [
+            "Generate-Outline.ps1",
+            "Prepare-Chapters.ps1",
+            "Generate-Practice.ps1",
+            "Copy-Chapter-Template.ps1",
+            "Copy-Practice-Template.ps1",
+            "Update-Progress.ps1"
+        ]
+        
+        # Copy scripts
+        if source_dir.exists():
+            for script_name in required_scripts:
+                source_file = source_dir / script_name
+                if source_file.exists():
+                    target_file = target_dir / script_name
+                    shutil.copy2(source_file, target_file)
+        else:
+            print(f"Warning: Scripts directory not found at {source_dir}")
+            return False
+        
+        return True
+    
+    except Exception as e:
+        print(f"Error copying scripts: {e}")
         return False

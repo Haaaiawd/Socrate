@@ -1,6 +1,40 @@
-# TeacherKit Socratic Dialogue - MVP Usage Guide
+# ⚠️ DEPRECATED - TeacherKit Socratic Dialogue - MVP Usage Guide
 
-## 🎯 What's Implemented
+> **WARNING**: This document is **OUTDATED** and no longer reflects the current TeacherKit implementation.
+> 
+> **Current Documentation**: See [README.md](./README.md) and [WORKFLOW-CHECK-REPORT.md](./WORKFLOW-CHECK-REPORT.md)
+> 
+> **Last Updated**: 2025-10-22 (Pre-refactoring)  
+> **Status**: Deprecated on 2025-10-27
+> 
+> **Major Changes Since This Document**:
+> - ❌ `Start-Lesson.ps1` has been removed (functionality integrated into /teacherkit.lesson)
+> - ❌ Single monolithic `prepared.md` replaced with individual `Chapter*.md` files
+> - ❌ Teaching workflow changed from single command to 5-step process
+> - ✅ New template system with Copy-Chapter/Practice-Template scripts
+> - ✅ Practice files are now `.ipynb` Jupyter Notebooks (not `.py`)
+> 
+> **Please use the new workflow**:
+> ```bash
+> # 1. Initialize project
+> teacherkit init my-project
+> 
+> # 2. Generate outline
+> /teacherkit.outline [attach file or describe topic]
+> 
+> # 3. Prepare chapters
+> /teacherkit.prepare
+> 
+> # 4. Generate practice exercises
+> /teacherkit.practice
+> 
+> # 5. Start learning
+> /teacherkit.lesson
+> ```
+
+---
+
+## 🎯 What's Implemented (OUTDATED - DO NOT FOLLOW)
 
 **User Story 3: Socratic Dialogue** - MVP Complete ✅
 

@@ -1,56 +1,76 @@
 ---
-title: "Textbook Outline"
-generated_at: ""
-source_textbook: ""
-total_chapters: 0
+title: ""
+topic: ""
+target_audience: "intermediate"
+difficulty: "intermediate"
+estimated_total_hours: 0
+generated_date: ""
 ---
 
-# Textbook Outline
+# Learning Outline: [Title]
 
-## Overview
+## Chapter 1: [Foundational Topic]
 
-**Textbook**: [Title]
-**Generated**: [Date]
-**Total Chapters**: [Number]
+### Topic 1.1: [Subtopic Name]
 
----
+**Overview**: [1-2 sentences]
 
-## Course Structure
+**Knowledge Points**:
+- **KP-1.1.1**: [Concept Name]
+  - Difficulty: medium
+  - Time: 30min
+  - Prerequisites: [List]
+  - Introduction: [Question/Scenario/Contrast approach]
 
-### Chapter 1: [Title]
+- **KP-1.1.2**: [Concept Name]
+  - Difficulty: medium
+  - Time: 30min
+  - Prerequisites: [List]
+  - Introduction: [Question/Scenario/Contrast approach]
 
-**Summary**: [Brief overview]
+### Topic 1.2: [Subtopic Name]
 
-**Sections**:
-1. [Section Title]
-   - Knowledge Points: [List]
-2. [Section Title]
-   - Knowledge Points: [List]
+**Overview**: [1-2 sentences]
 
-**Estimated Time**: [Hours]
-
----
-
-### Chapter 2: [Title]
-
-**Summary**: [Brief overview]
-
-**Sections**:
-1. [Section Title]
-   - Knowledge Points: [List]
-
-**Estimated Time**: [Hours]
+**Knowledge Points**:
+- **KP-1.2.1**: [Concept Name]
+  - Difficulty: medium
+  - Time: 30min
+  - Prerequisites: [List]
+  - Introduction: [Question/Scenario/Contrast approach]
 
 ---
 
-## Learning Path
+## Chapter 2: [Advanced Topic]
 
-**Recommended Sequence**:
-1. Chapter 1 → Chapter 2 → Chapter 3 ...
+### Topic 2.1: [Subtopic Name]
 
-**Prerequisites**:
-- [List any prerequisites]
+**Overview**: [1-2 sentences]
 
-**Learning Goals**:
-- [Primary objective]
-- [Secondary objective]
+**Knowledge Points**:
+- **KP-2.1.1**: [Concept Name]
+  - Difficulty: hard
+  - Time: 45min
+  - Prerequisites: [List]
+  - Introduction: [Question/Scenario/Contrast approach]
+
+---
+
+## Review Phase: [Topic] Mastery
+
+**Practice Focus**: Apply all concepts to real problems.
+
+### Review 1: [Chapter 1 Integration]
+- Combine KP-1.1.1, KP-1.1.2, KP-1.1.3
+- Build [mini-project description]
+- Time: 2 hours
+
+### Review 2: [Chapter 2 Integration]
+- Combine KP-2.1.1, KP-2.1.2
+- Build [mini-project description]
+- Time: 2 hours
+
+### Final Project: [Comprehensive Application]
+- Integrate all chapters
+- Build [complete project description]
+- Time: 4-6 hours

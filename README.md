@@ -145,33 +145,35 @@ the number 30 in the same box?
 
 Great progress! Time for hands-on practice.
 
-I've created: data/exercises/practice-variables-01.py
+I've created: data/exercises/practice-variables-01.ipynb
 
-Open it, fill in the TODOs, and submit when ready!
+Open it in Jupyter/VS Code, fill in the TODOs, and run the cells!
 ```
 
-**Example Exercise File**:
+**Example Exercise File** (Jupyter Notebook):
 ```python
-"""
-Exercise: Variable Reassignment and Type Checking
+# Cell 1 (Markdown)
+# Practice: Variable Basics
+# **Concepts**: Variables, Data Types, Reassignment
+# **Difficulty**: Level 1
+# **Estimated**: 10 minutes
 
-Your task: Complete the TODOs below to practice variable basics.
-"""
-
+# Cell 2 (Code)
 # TODO 1: Create a variable 'name' and assign your name as a string
 
+### START CODE HERE ###
+name = None  # Replace this
+### END CODE HERE ###
 
+# Cell 3 (Code)
 # TODO 2: Create a variable 'age' and assign your age as an integer
 
+### START CODE HERE ###
+age = None  # Replace this
+### END CODE HERE ###
 
-# TODO 3: Reassign 'age' to a new value (e.g., age + 1)
-
-
-# START CODE (Your solution)
-
-# END CODE
-
-# Test cases (don't modify)
+# Cell 4 (Code)
+# Test cases (don't modify - run this cell to check your solution)
 assert isinstance(name, str), "name should be a string"
 assert isinstance(age, int), "age should be an integer"
 print(f"✅ All tests passed! {name} is {age} years old.")
@@ -252,15 +254,35 @@ TeacherKit is **not a traditional CLI tool**. It's a collection of **AI prompt t
 CLI (One-Time Setup)          AI Prompts (The Real Teachers)
 ├── teacherkit init           ├── /teacherkit.outline
 │   └── Sets up folders       │   └── Analyzes file/topic → creates lesson plan
-└── teacherkit (no args)      ├── /teacherkit.prepare
-    └── Shows help            │   └── Elaborates concepts → adds Socratic questions
+└── teacherkit config         ├── /teacherkit.prepare
+    └── Manages settings      │   └── Elaborates concepts → adds Socratic questions
+                              ├── /teacherkit.practice
+                              │   └── Generates Jupyter Notebook exercises
                               ├── /teacherkit.lesson
                               │   └── Interactive teaching dialogue
-                              ├── /teacherkit.practice
-                              │   └── Generates exercises with TODOs
                               └── /teacherkit.check
                                   └── Quality validation (optional)
 ```
+
+### PowerShell Automation Scripts
+
+TeacherKit includes helper scripts in `.specify/scripts/powershell/`:
+
+```powershell
+# Quick template creation
+Generate-Outline.ps1 -Topic "Python Basics"
+Prepare-Chapters.ps1           # Check prerequisites before /teacherkit.prepare
+Generate-Practice.ps1          # Check prerequisites before /teacherkit.practice
+
+# Template copying (called by AI automatically)
+Copy-Chapter-Template.ps1 -KpId "KP-1.1.1" -Title "Variables"
+Copy-Practice-Template.ps1 -Slug "variables-basics"
+
+# Progress tracking
+Update-Progress.ps1 -KpId "KP-1.1.1" -Status "completed"
+```
+
+**Note**: Most scripts are called by AI automatically. You typically only run `Generate-Outline.ps1` manually.
 
 ### Data Storage
 
@@ -271,9 +293,9 @@ data/
 ├── outlines/
 │   └── [topic]-outline.md            # Learning plan with chapter structure
 ├── chapters/
-│   └── [topic]-prepared.md           # Elaborated knowledge points
+│   └── Chapter*.md                   # Individual KP files (one per concept)
 ├── exercises/
-│   ├── practice-[topic]-01.py        # Practice code files
+│   ├── practice-[topic].ipynb        # Jupyter Notebook practice files
 │   └── exercises-meta.md             # Exercise catalog
 └── progress.md                       # Your learning progress (auto-saved)
 ```

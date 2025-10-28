@@ -9,7 +9,7 @@ from typing import Optional
 from rich.console import Console
 from rich.panel import Panel
 
-from .commands import init, config
+from .commands import init, config, update
 
 app = typer.Typer(
     name="teacherkit",
@@ -20,6 +20,7 @@ app = typer.Typer(
 
 # Register commands
 app.command(name="init")(init.init_command)
+app.command(name="update")(update.update_command)
 app.add_typer(config.app, name="config")
 
 console = Console(legacy_windows=True)  # Enable Windows PowerShell compatibility

@@ -6,13 +6,43 @@ from typing import Optional
 
 import typer
 from rich.console import Console
+from rich.panel import Panel
+from rich.text import Text
+from rich.align import Align
 
 from ..utils.git import check_git_installed, init_repository
-from ..utils.template import copy_templates_to_project, copy_prompts_to_project
+from ..utils.template import copy_templates_to_project, copy_prompts_to_project, copy_scripts_to_project
 from ..utils.progress import track_steps, print_success, print_error, print_warning, confirm
 
 
 console = Console(legacy_windows=True)  # Enable Windows PowerShell compatibility
+
+
+def _print_logo():
+    """Print TeacherKit ASCII logo"""
+    logo = r"""
+    ╔════════════════════════════════════════════════════╗
+    ║                                                    ║
+    ║   ████████╗███████╗ █████╗  ██████╗██╗  ██╗       ║
+    ║   ╚══██╔══╝██╔════╝██╔══██╗██╔════╝██║  ██║       ║
+    ║      ██║   █████╗  ███████║██║     ███████║       ║
+    ║      ██║   ██╔══╝  ██╔══██║██║     ██╔══██║       ║
+    ║      ██║   ███████╗██║  ██║╚██████╗██║  ██║       ║
+    ║      ╚═╝   ╚══════╝╚═╝  ╚═╝ ╚═════╝╚═╝  ╚═╝       ║
+    ║                                                    ║
+    ║   ██╗  ██╗██╗████████╗                            ║
+    ║   ██║ ██╔╝██║╚══██╔══╝                            ║
+    ║   █████╔╝ ██║   ██║                               ║
+    ║   ██╔═██╗ ██║   ██║                               ║
+    ║   ██║  ██╗██║   ██║                               ║
+    ║   ╚═╝  ╚═╝╚═╝   ╚═╝                               ║
+    ║                                                    ║
+    ║        AI-Powered Socratic Teaching System        ║
+    ║                   Version 0.1.0                   ║
+    ║                                                    ║
+    ╚════════════════════════════════════════════════════╝
+    """
+    console.print(logo, style="bold cyan", highlight=False)
 
 
 def init_command(
@@ -44,7 +74,11 @@ def init_command(
     else:
         target_dir = Path.cwd()
     
-    console.print(f"\n[bold]Initializing TeacherKit project at:[/bold] {target_dir}\n")
+    # Show ASCII Logo
+    _print_logo()
+    
+    # Show target directory
+    console.print(f"[dim]Initializing at:[/dim] [bold cyan]{target_dir}[/bold cyan]\n")
     
     # Check if project already exists
     specify_dir = target_dir / ".specify"
@@ -57,41 +91,56 @@ def init_command(
             raise typer.Exit(1)
     
     try:
-        with track_steps(7, "Setting up project") as tracker:
-            # Step 1: Create directory structure
-            tracker.update("Creating directories")
-            _create_directory_structure(target_dir)
-            
-            # Step 2: Copy templates
-            tracker.update("Copying templates")
-            if not copy_templates_to_project(target_dir):
-                raise Exception("Failed to copy templates")
-            
-            # Step 3: Copy VS Code prompts
-            tracker.update("Copying prompts")
-            if not copy_prompts_to_project(target_dir):
-                raise Exception("Failed to copy prompts")
-            
-            # Step 4: Create data directories
-            tracker.update("Setting up data storage")
-            _create_data_directories(target_dir)
-            
-            # Step 5: Create config file
-            tracker.update("Creating configuration")
-            _create_config_file(target_dir)
-            
-            # Step 6: Initialize Git (optional)
-            if not no_git:
-                tracker.update("Initializing Git repository")
-                _init_git_repository(target_dir)
-            else:
-                tracker.update("Skipping Git initialization")
-            
-            # Step 7: Create welcome message
-            tracker.update("Finalizing setup")
+        # Step 1: Create directory structure
+        console.print("  [bold blue]📁 Creating directories...[/bold blue]", end=" ")
+        _create_directory_structure(target_dir)
+        console.print("[green]✓[/green]")
         
-        # Success message
-        console.print("\n[bold green]✓ Project initialized successfully![/bold green]\n")
+        # Step 2: Copy templates
+        console.print("  [bold blue]📄 Copying templates...[/bold blue]", end=" ")
+        if not copy_templates_to_project(target_dir):
+            raise Exception("Failed to copy templates")
+        console.print("[green]✓[/green] [dim](4 files)[/dim]")
+        
+        # Step 3: Copy VS Code prompts
+        console.print("  [bold blue]💬 Copying prompts...[/bold blue]", end=" ")
+        if not copy_prompts_to_project(target_dir):
+            raise Exception("Failed to copy prompts")
+        console.print("[green]✓[/green] [dim](5 files)[/dim]")
+        
+        # Step 4: Copy PowerShell scripts
+        console.print("  [bold blue]⚙️  Copying automation scripts...[/bold blue]", end=" ")
+        if not copy_scripts_to_project(target_dir):
+            raise Exception("Failed to copy scripts")
+        console.print("[green]✓[/green] [dim](6 files)[/dim]")
+        
+        # Step 5: Create data directories
+        console.print("  [bold blue]🗂️  Setting up data storage...[/bold blue]", end=" ")
+        _create_data_directories(target_dir)
+        console.print("[green]✓[/green]")
+        
+        # Step 6: Create config file
+        console.print("  [bold blue]⚙️  Creating configuration...[/bold blue]", end=" ")
+        _create_config_file(target_dir)
+        console.print("[green]✓[/green]")
+        
+        # Step 7: Initialize Git (optional)
+        if not no_git:
+            console.print("  [bold blue]🔧 Initializing Git repository...[/bold blue]", end=" ")
+            _init_git_repository(target_dir)
+        else:
+            console.print("  [dim]⏭️  Skipping Git initialization[/dim]")
+        
+        console.print()  # Empty line
+        
+        # Success banner
+        success_banner = """
+    ╔═══════════════════════════════════════╗
+    ║  ✨  Setup Complete Successfully!  ✨  ║
+    ╚═══════════════════════════════════════╝
+        """
+        console.print(success_banner, style="bold green")
+        console.print()  # Empty line
         _print_next_steps(target_dir)
     
     except Exception as e:
@@ -105,9 +154,9 @@ def _create_directory_structure(project_dir: Path):
         ".specify/scripts/powershell",
         ".specify/templates",
         ".github/prompts",
-        "data/textbooks",
         "data/outlines",
         "data/chapters",
+        "data/exercises",
         "data/progress",
         "logs"
     ]
@@ -120,10 +169,10 @@ def _create_directory_structure(project_dir: Path):
 def _create_data_directories(project_dir: Path):
     """Create data storage directories with README files"""
     data_dirs = {
-        "data/textbooks": "Place textbook source files (.md or .txt) here",
-        "data/outlines": "Generated outlines will be saved here",
-        "data/chapters": "Prepared chapter materials will be saved here",
-        "data/progress": "Student learning progress files will be saved here"
+        "data/outlines": "Generated learning outlines will be saved here",
+        "data/chapters": "Individual knowledge point files will be saved here",
+        "data/exercises": "Practice exercises (Jupyter Notebooks) will be saved here",
+        "data/progress": "Student learning progress will be tracked here"
     }
     
     for dir_path, description in data_dirs.items():
@@ -179,7 +228,7 @@ logging:
 def _init_git_repository(project_dir: Path):
     """Initialize Git repository with initial commit"""
     if not check_git_installed():
-        print_warning("Git not found - skipping repository initialization")
+        console.print("[yellow]✗[/yellow] [dim](Git not found)[/dim]")
         return
     
     repo = init_repository(project_dir, initial_commit=False)
@@ -190,9 +239,9 @@ def _init_git_repository(project_dir: Path):
         
         # Create initial commit
         repo.index.commit("chore: initialize TeacherKit project\n\nCreated by `teacherkit init`")
-        print_success("Git repository initialized")
+        console.print("[green]✓[/green]")
     else:
-        print_warning("Git initialization failed")
+        console.print("[yellow]✗[/yellow] [dim](failed)[/dim]")
 
 
 def _print_next_steps(project_dir: Path):
@@ -200,20 +249,22 @@ def _print_next_steps(project_dir: Path):
     project_name = project_dir.name
     is_current_dir = project_dir.resolve() == Path.cwd().resolve()
     
-    console.print("[bold]Next steps:[/bold]\n")
+    console.print("[bold cyan]📚 Next Steps:[/bold cyan]\n")
     
     if not is_current_dir:
-        console.print(f"1. Navigate to project:")
-        console.print(f"   [cyan]cd {project_name}[/cyan]\n")
+        console.print("  [bold]1.[/bold] Navigate to project:")
+        console.print(f"     [cyan]cd {project_name}[/cyan]\n")
         step_num = 2
     else:
         step_num = 1
     
-    console.print(f"{step_num}. Add a textbook:")
-    console.print(f"   [cyan]Copy your textbook file to data/textbooks/[/cyan]\n")
-    console.print(f"{step_num + 1}. Register the textbook:")
-    console.print("   [cyan]teacherkit config add-textbook data/textbooks/your-textbook.md[/cyan]\n")
-    console.print(f"{step_num + 2}. Parse the textbook (in VS Code):")
-    console.print("   [cyan]Open Command Palette and run: /teacherkit.parse[/cyan]\n")
-    console.print(f"{step_num + 3}. Start teaching:")
-    console.print("   [cyan]Open Command Palette and run: /teacherkit.lesson[/cyan]\n")
+    console.print(f"  [bold]{step_num}.[/bold] Open in VS Code:")
+    console.print(f"     [cyan]code .[/cyan]\n")
+    
+    console.print(f"  [bold]{step_num + 1}.[/bold] Start learning workflow:")
+    console.print("     [cyan]Open Copilot Chat → /teacherkit.outline[/cyan]\n")
+    
+    console.print(f"  [bold]{step_num + 2}.[/bold] Try the complete flow:")
+    console.print("     [dim]/teacherkit.outline → /teacherkit.prepare → /teacherkit.practice → /teacherkit.lesson[/dim]\n")
+    
+    console.print("[dim]📖 Need help? Check README.md for detailed guide[/dim]\n")

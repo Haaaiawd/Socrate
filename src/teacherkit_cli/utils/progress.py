@@ -7,7 +7,9 @@ from contextlib import contextmanager
 from typing import Optional
 
 from rich.console import Console
-from rich.progress import Progress, SpinnerColumn, TextColumn, BarColumn, TaskProgressColumn, TaskID
+from rich.progress import Progress, SpinnerColumn, TextColumn, BarColumn, TaskProgressColumn, TaskID, TimeElapsedColumn
+from rich.panel import Panel
+from rich.text import Text
 
 
 console = Console()
@@ -33,11 +35,13 @@ class StepTracker:
     def start(self):
         """Start progress tracking"""
         self.progress = Progress(
-            SpinnerColumn(),
-            TextColumn("[progress.description]{task.description}"),
-            BarColumn(),
+            SpinnerColumn(spinner_name="dots"),
+            TextColumn("[bold blue]{task.description}[/bold blue]"),
+            BarColumn(bar_width=40, complete_style="green", finished_style="bold green"),
             TaskProgressColumn(),
-            console=console
+            TimeElapsedColumn(),
+            console=console,
+            expand=False
         )
         self.progress.start()
         self.task_id = self.progress.add_task(
@@ -55,11 +59,14 @@ class StepTracker:
         """
         if self.progress and self.task_id is not None:
             self.current_step += increment
+            # Show step completion with emoji
+            emoji = "✨" if self.current_step == self.total_steps else "📦"
             self.progress.update(
                 self.task_id,
                 advance=increment,
-                description=f"{self.description}: {step_description}"
+                description=f"{emoji} {step_description}"
             )
+            time.sleep(0.1)  # Brief animation pause
     
     def complete(self, final_message: Optional[str] = None):
         """
@@ -73,10 +80,17 @@ class StepTracker:
                 self.progress.update(
                     self.task_id,
                     completed=self.total_steps,
-                    description=final_message or f"{self.description}: Complete"
+                    description=final_message or "✅ Setup complete!"
                 )
-            time.sleep(0.5)  # Brief pause to show completion
+            time.sleep(0.3)  # Brief pause to show completion
             self.progress.stop()
+            
+            # Show completion banner
+            if not final_message:
+                completion_text = Text()
+                completion_text.append("🎉 ", style="bold yellow")
+                completion_text.append("All steps completed successfully!", style="bold green")
+                console.print(Panel(completion_text, border_style="green", expand=False))
     
     def error(self, error_message: str):
         """
