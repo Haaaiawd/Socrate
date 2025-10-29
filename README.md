@@ -76,151 +76,36 @@ cd my-python-journey
 
 ## 📖 使用方法
 
-### 场景 1：从文件学习（教材/PDF/Markdown）
+### 典型工作流
 
-**步骤 1**：将文件附加到 AI 对话
+```bash
+# 1. 初始化项目
+socrate init my-learning
 
-```
-[附加: python-fundamentals.pdf]
-```
+# 2. 在 AI 对话中附加教材文件，或直接描述主题
+/teacherkit.outline          # 生成学习大纲
 
-**步骤 2**：生成大纲
+# 3. 准备知识点内容
+/teacherkit.prepare          # 添加问题、示例、练习
 
-```
-/teacherkit.outline
-```
+# 4. 开始学习
+/teacherkit.lesson           # 苏格拉底式对话教学
 
-**AI 回应**：
-```
-📚 我已分析你的教材！学习计划如下：
-
-第 1 章：Python 基础（3-4 小时）
-├── 1.1 变量与数据类型（30 分钟）
-│   ├── KP-1.1.1：变量赋值与命名
-│   ├── KP-1.1.2：数值类型（int, float）
-│   └── KP-1.1.3：字符串操作
-└── 1.2 控制流（45 分钟）
-    └── ... [更多内容]
-
-保存至: data/outlines/python-fundamentals-outline.md
-准备开始？运行 /teacherkit.prepare 继续！
+# 5. 暂停/恢复
+输入 "pause" 保存进度
+下次运行 /teacherkit.lesson 自动恢复
 ```
 
-**步骤 3**：准备知识点
+### 三种学习方式
 
-```
-/teacherkit.prepare
-```
+**方式 1**：从文件学习  
+→ 附加 `.md`/`.pdf` 文件 → `/teacherkit.outline`
 
-**AI 回应**：
-```
-✅ 准备了 18 个知识点：
-- 核心定义
-- 代码示例
-- 苏格拉底式问题（每个 3 层）
-- 类比与对比表格
+**方式 2**：从主题学习  
+→ `/teacherkit.outline "Python 装饰器"` → AI 生成大纲
 
-保存至: data/chapters/python-fundamentals-prepared.md
-开始学习！运行 /teacherkit.lesson
-```
-
-**步骤 4**：开始交互式学习
-
-```
-/teacherkit.lesson
-```
-
-**AI 回应**（苏格拉底式对话开始）：
-```
-🎓 欢迎来到你的 Python 学习之旅！
-
-今天我们将探索：变量与数据类型（30 分钟）
-
-让我们从一个问题开始：
-
-想象你有一个盒子可以存放东西。在编程中，
-我们称之为"变量"。
-
-🤔 问题 1：如果我告诉你有一个标签为 "age" 的盒子，
-里面装着数字 25，那么如果我后来把数字 30 放进同一个
-盒子，你认为会发生什么？
-
-（思考一下，然后分享你的答案！）
-```
-
-**步骤 5**：练习（在 AI 提示时）
-
-```
-[完成 2-3 个概念后，AI 说：]
-
-进展不错！来点实践吧。
-
-我已创建：data/exercises/practice-variables-01.py
-用 VS Code 打开，填写 TODO 部分并运行代码！
-```
-
----
-
-### 场景 2：从主题描述学习
-
-**步骤 1**：描述想学的内容
-
-```
-/teacherkit.outline "我想了解 Python 列表推导式"
-```
-
-**AI 回应**：
-```
-📚 自定义课程：列表推导式
-
-难度：中级  
-预计时间：20-30 分钟
-
-主题 1：基础（10 分钟）
-├── KP-1.1：基本列表操作回顾
-├── KP-1.2："推导式"的概念
-└── KP-1.3：语法拆解：[expression for item in iterable]
-
-主题 2：实际应用（15 分钟）
-├── KP-2.1：使用条件过滤
-├── KP-2.2：数据转换
-└── KP-2.3：嵌套推导式
-
-[后续步骤与场景 1 相同...]
-```
-
----
-
-### 场景 3：暂停后恢复
-
-```
-[打开对话，运行：]
-/teacherkit.lesson
-```
-
-**AI 回应**：
-```
-🎓 欢迎回来！
-
-上次学习：2025 年 10 月 23 日 15:45
-距离上次学习：2 天
-
-目前进度：8 个知识点（44% 完成）
-- KP-1.1.1：变量赋值
-- KP-1.1.2：数值类型
-- ... [最近的知识点]
-
-下一个：KP-1.3.1：If/else 语句
-
----
-
-你想如何继续？
-选项 A：从上次位置继续（直接开始）
-选项 B：快速回顾，然后继续（5 分钟复习）
-选项 C：从新主题开始
-
-（只需说 "A"、"B" 或 "C"！）
-```
+**方式 3**：恢复学习  
+→ `/teacherkit.lesson` → 选择继续/回顾/重新开始
 
 ---
 
@@ -314,7 +199,6 @@ mypy src/socrate_cli
 2. 重新运行 `socrate init` 复制更新的提示词
 3. 用新的学习会话测试
 
-**无需编程！** 只需修改 Markdown 模板。
 
 ---
 
@@ -351,25 +235,13 @@ Apache License 2.0 - 详见 [LICENSE](LICENSE) 文件
 
 灵感来源：
 - [spec-kit](https://github.com/yisak/spec-kit) - 结构化 AI 工作流的先驱
-- OpenAI - 苏格拉底式教学原则
+- OpenAI - 学习与研究提示词
 
-技术支持：
-- [Typer](https://typer.tiangolo.com/) - 优雅的 CLI 框架
-- [Rich](https://rich.readthedocs.io/) - 终端格式化
-- [GitPython](https://gitpython.readthedocs.io/) - Git 操作
-
-适配的 AI 代码助手：
+目前适配的 AI 代码助手：
 - GitHub Copilot
-- Cursor
-- Claude Code
+
 
 ---
 
 **准备好转变你的学习方式了吗？**
 
-```bash
-socrate init my-learning-journey
-# 然后附加文件或描述主题 + /teacherkit.outline
-```
-
-*快乐学习！ 🎓✨*
