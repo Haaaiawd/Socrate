@@ -45,13 +45,22 @@ htmlcov/
 logs/
 *.log
 
-# TeacherKit specific - Student data (DO NOT COMMIT)
+# Socrate - Backups and temporary files (DO NOT COMMIT)
+.specify/backups/
+*.bak
+data/progress.md.bak
+
+# Student data (DO NOT COMMIT)
 data/
 !data/.gitkeep
 
+# Development and internal docs (DO NOT COMMIT)
+specs/
+docs/
+deepl/
+
 # Temporary files
 *.tmp
-*.bak
 *.swp
 Thumbs.db
 

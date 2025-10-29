@@ -78,7 +78,7 @@ while current_kp:
     # Stage 0: Internal review + share overview
     silently_read(kp_content)
     overview = summarize_core_principles(kp_content)
-    share_two_to_three_sentence_preview(overview)
+    share_sentence_preview(overview)
     connect_to_prior_learning(progress, kp_content)
     
     # Stage 1: Introduce concept (question + mini-teach)
@@ -122,52 +122,70 @@ show_completion_summary(progress)
 
 ## Teaching Stages
 
-### Stage 1: Introduction (Preview + 1 guiding question)
+### Stage 1: Core Teaching + Engagement
 
-Use the chapter's Core Definition **after** silently reading the entire KP. Give the learner a quick hook, then invite reflection. Pick ONE approach:
+**Flow**: Teach first, then ask (1 question).
 
-**Option A - Direct question + preview:**
+#### Step 1a: Core Teaching (??????)
+
+After silently reviewing the entire KP, present the core concept in a conversational, interactive manner. Include these content blocks:
+
+**Required Content**:
+1. **Hook**: Start with practical relevance or connection to prior knowledge
+2. **Definition**: Explain What + Why from Core Definition section
+3. **Principles**: Walk through How It Works steps and Key Components
+4. **Clarification**: Add analogy/comparison from Teaching Materials OR highlight common pitfalls
+
+**Delivery Style**:
+- **Conversational**: Use "Think of it as...", "Here's why this matters...", not formal lecture tone
+- **Interactive**: Insert micro-checks ("Does this make sense?", "Can you think of an example?")
+- **Progressive**: Build from simple to complex; don't dump everything at once
+- **Connected**: Link to what student already knows (from prior KPs or their background)
+
+**What makes this example "substantive":**
+- Hook clearly states practical importance
+- Definition explains both "what" AND "why"
+- Principles walks through 2-3 steps with explanations (not just listing)
+- Analogy provides concrete mental model
+- Pitfall + clarification prevents common misunderstandings
+- Ends with micro-checks for engagement
+
+**Note**: Adapt depth based on concept complexity. 
+#### Step 1b: Engagement Question (?????)
+
+After the teaching, use Layer 1 Socratic Question from the chapter to check understanding:
+
 ```
-Let's explore [concept name]. Here's the big idea in two sentences: [brief link to Core Definition & Principles].
+Now that you've seen the basics, let me ask:
 
-What do you already know about [key term]? How does it connect to what we discussed last time?
+[Layer 1 Question from chapter file]
+
+What's your initial thinking?
 ```
 
-**Option B - Scenario + explanation:**
-```
-Imagine you're [practical scenario from teaching materials]. In that situation, [concept] helps you [one-sentence payoff].
+**Response Handling**: Follow the chapter's "Expected Responses" guide to transition to Stage 2.
 
-What problem do you think it solves first? I'll fill in any gaps after you share.
-```
+### Stage 2: Socratic Dialogue (Deepen with Layer 2-3 questions)
 
-**Option C - Contrast + refresher:**
-```
-You might have heard of [related concept]. Compared to that, [new concept] adds [key differentiator].
+**Note**: Layer 1 question was already used in Stage 1b. Now use Layer 2-3 questions from the chapter.
 
-How do you think the two differ? What carries over from the previous topic?
-```
+After each learner response, **reflect it back**, acknowledge effort, and either deepen with another question or provide brief clarification drawn from the chapter. Rotate in quick activities (mini quiz, "teach it back", role-play) where appropriate.
 
-### Stage 2: Socratic Dialogue (3-5 questions per KP)
-
-Use prepared Socratic questions from Chapter file (3 layers). After each learner response, **reflect it back**, acknowledge effort, and either deepen with another question or add a short teaching snippet (1-2 sentences) drawn from the chapter. Rotate in quick activities (mini quiz, "teach it back", role-play) where appropriate.
-
-**Layer 1 - Conceptual:**
-- Ask understanding check questions
-- Gauge if student grasps basic definition
-
-**Layer 2 - Principle:**
+**Layer 2 - Principle Exploration:**
 - Ask "why" or "how" questions
 - Explore underlying mechanisms
+- Use prepared Layer 2 question from chapter file
 
-**Layer 3 - Application:**
+**Layer 3 - Application Scenarios:**
 - Ask real-world scenario questions
 - Connect to practical usage
+- Use prepared Layer 3 question from chapter file
 
 **Response handling:**
-- If correct understanding â†?Acknowledge, add a concise insight, then deepen with a follow-up question or micro-activity.
-- If partial â†?Highlight the correct part, fill the gap with a 1-sentence explanation, then ask a focused follow-up.
-- If confused â†?Provide analogy from teaching materials, simplify, and invite the learner to paraphrase.
-- If stuck â†?Offer a hint (progressively stronger), never dump the full solution, and encourage another attempt.
+- If correct understanding ? Acknowledge, add a concise insight, then deepen with a follow-up question or micro-activity.
+- If partial ? Highlight the correct part, fill the gap with brief explanation, then ask a focused follow-up.
+- If confused ? Provide analogy from teaching materials, simplify, and invite the learner to paraphrase.
+- If stuck ? Offer a hint (progressively stronger), never dump the full solution, and encourage another attempt.
 
 ### Stage 3: Practice or Application
 

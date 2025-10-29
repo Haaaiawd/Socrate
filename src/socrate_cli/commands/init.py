@@ -123,6 +123,11 @@ def init_command(
         _create_vscode_settings(target_dir)
         console.print("[green]✓[/green]")
         
+        # Step 6.6: Create .gitignore
+        console.print("  [bold blue]📋 Creating .gitignore...[/bold blue]", end=" ")
+        _create_gitignore(target_dir)
+        console.print("[green]✓[/green]")
+        
         # Step 7: Initialize Git (optional)
         if not no_git:
             console.print("  [bold blue]🔧 Initializing Git repository...[/bold blue]", end=" ")
@@ -251,6 +256,58 @@ def _create_vscode_settings(project_dir: Path):
     settings_path.write_text(vscode_settings, encoding="utf-8")
 
 
+def _create_gitignore(project_dir: Path):
+    """Create .gitignore file with Socrate-specific rules"""
+    gitignore_path = project_dir / ".gitignore"
+    
+    if gitignore_path.exists():
+        return  # Don't overwrite existing .gitignore
+    
+    gitignore_content = """# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+.venv/
+venv/
+ENV/
+env/
+
+# Testing
+.pytest_cache/
+.coverage
+*.egg-info/
+.installed.cfg
+*.egg
+
+# IDE & OS
+.vscode/
+!.vscode/prompts/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# Logs
+logs/
+*.log
+
+# Socrate - Backups and temporary files (DO NOT COMMIT)
+.specify/backups/
+*.bak
+data/progress.md.bak
+
+# Socrate - Student data (DO NOT COMMIT)
+data/
+!data/.gitkeep
+"""
+    
+    gitignore_path.write_text(gitignore_content, encoding="utf-8")
+
+
 def _init_git_repository(project_dir: Path):
     """Initialize Git repository with initial commit"""
     if not check_git_installed():
@@ -261,7 +318,7 @@ def _init_git_repository(project_dir: Path):
     
     if repo:
         # Stage all created files
-        repo.index.add([".specify", ".github", "data", "logs"])
+        repo.index.add([".gitignore", ".specify", ".github", "data", "logs"])
         
         # Create initial commit
         repo.index.commit("chore: initialize Socrate project\n\nCreated by `socrate init`")
