@@ -56,7 +56,9 @@ data/
 
 # Development and internal docs (DO NOT COMMIT)
 specs/
+
 docs/
+
 deepl/
 
 # Temporary files
