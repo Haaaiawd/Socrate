@@ -1,5 +1,5 @@
 # update.py
-"""teacherkit update command: Update project prompts and scripts"""
+"""socrate update command: Update project prompts and scripts"""
 
 from pathlib import Path
 from typing import Optional
@@ -43,15 +43,15 @@ def update_command(
     )
 ):
     """
-    Update teacherkit project with latest prompts and scripts
+    Update Socrate project with latest prompts and scripts
     
-    Use this when teacherkit is upgraded and you want to sync your
+    Use this when Socrate is upgraded and you want to sync your
     existing project with new features.
     
     Examples:
-        teacherkit update my-project
-        teacherkit update --prompts-only
-        teacherkit update --force --no-backup
+        socrate update my-project
+        socrate update --prompts-only
+        socrate update --force --no-backup
     """
     # Determine target directory
     if project_path:
@@ -62,11 +62,11 @@ def update_command(
     # Validate project exists
     specify_dir = target_dir / ".specify"
     if not specify_dir.exists():
-        print_error(f"Not a teacherkit project: {target_dir}")
-        console.print("\n[yellow]💡 Hint:[/yellow] Run [cyan]teacherkit init[/cyan] first.\n")
+        print_error(f"Not a Socrate project: {target_dir}")
+        console.print("\n[yellow]💡 Hint:[/yellow] Run [cyan]socrate init[/cyan] first.\n")
         raise typer.Exit(1)
     
-    console.print(f"\n[bold cyan]🔄 Updating TeacherKit Project[/bold cyan]")
+    console.print(f"\n[bold cyan]🔄 Updating Socrate Project[/bold cyan]")
     console.print(f"[dim]Target:[/dim] {target_dir}\n")
     
     # Check git status (warn if uncommitted changes)
@@ -135,6 +135,14 @@ def update_command(
                 updated_count += 1
             else:
                 console.print("[red]✗[/red]")
+            
+            # Update VS Code settings
+            console.print("  [bold blue]🔧 Updating VS Code settings...[/bold blue]", end=" ")
+            if _update_vscode_settings(target_dir):
+                console.print("[green]✓[/green]")
+                updated_count += 1
+            else:
+                console.print("[yellow]⏭️[/yellow] [dim](exists)[/dim]")
         
         console.print()
         
@@ -162,6 +170,71 @@ def update_command(
             console.print("\n[yellow]💡 Restore from backup:[/yellow]")
             console.print("   [cyan]cd .specify/backups/[/cyan]\n")
         raise typer.Exit(1)
+
+
+def _update_vscode_settings(project_dir: Path) -> bool:
+    """Update or create VS Code settings.json with Copilot auto-approval"""
+    import json
+    
+    vscode_dir = project_dir / ".vscode"
+    settings_path = vscode_dir / "settings.json"
+    
+    # Ensure .vscode directory exists
+    vscode_dir.mkdir(exist_ok=True)
+    
+    # If settings doesn't exist, create it
+    if not settings_path.exists():
+        vscode_settings = {
+            "chat.promptFilesRecommendations": {
+                "socrate.outline": True,
+                "socrate.prepare": True,
+                "socrate.check": True,
+                "socrate.practice": True,
+                "socrate.lesson": True
+            },
+            "chat.tools.terminal.autoApprove": {
+                ".specify/scripts/bash/": True,
+                ".specify/scripts/powershell/": True
+            }
+        }
+        settings_path.write_text(json.dumps(vscode_settings, indent=4), encoding="utf-8")
+        return True
+    
+    # If exists, merge settings
+    try:
+        with open(settings_path, 'r', encoding='utf-8') as f:
+            existing_settings = json.load(f)
+        
+        # Add Socrate prompt recommendations
+        if "chat.promptFilesRecommendations" not in existing_settings:
+            existing_settings["chat.promptFilesRecommendations"] = {}
+        
+        socrate_prompts = {
+            "socrate.outline": True,
+            "socrate.prepare": True,
+            "socrate.check": True,
+            "socrate.practice": True,
+            "socrate.lesson": True
+        }
+        existing_settings["chat.promptFilesRecommendations"].update(socrate_prompts)
+        
+        # Add auto-approve settings
+        if "chat.tools.terminal.autoApprove" not in existing_settings:
+            existing_settings["chat.tools.terminal.autoApprove"] = {}
+        
+        existing_settings["chat.tools.terminal.autoApprove"].update({
+            ".specify/scripts/bash/": True,
+            ".specify/scripts/powershell/": True
+        })
+        
+        # Write back
+        with open(settings_path, 'w', encoding='utf-8') as f:
+            json.dump(existing_settings, f, indent=4)
+        
+        return True
+    except Exception as e:
+        console.print(f"[yellow]Warning: Failed to update settings.json: {e}[/yellow]")
+        return False
 
 
 def _create_backup(project_dir: Path):

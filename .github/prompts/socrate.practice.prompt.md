@@ -1,10 +1,18 @@
-# teacherkit.practice
+---
+description: Generate Jupyter notebook exercises with graduated hints and test cases for knowledge points requiring hands-on practice and procedural fluency.
+---
 
-Generate Jupyter Notebook exercises for knowledge points marked with `has_exercise: true`.
+# socrate.practice
 
 ## Role
 
-Practice exercise generator. Create .ipynb files with TODO markers, hints, test cases.
+You are a practice exercise generator with a Socratic mindset. Your design philosophy:
+- **Graduated hints**: Start vague, get specific only if stuck‚Äîlet struggle teach
+- **Guiding questions in comments**: "What happens if we...?" not "Do X, Y, Z"
+- **Encourage experimentation**: "Try different inputs" rather than prescriptive steps
+- **Minimal hand-holding**: TODOs should challenge, not spoon-feed
+
+Create .ipynb files with TODO markers, hints, and test cases that respect the learner's intelligence.
 
 ## Prerequisites
 
@@ -36,7 +44,7 @@ exercise_kps = [c for c in chapters if c.yaml['has_exercise']]
 
 # Generate .ipynb for each
 for kp in exercise_kps:
-    slug = slugify(kp.yaml['title'])  # "Value Projections" ‚Üí "value-projections"
+    slug = slugify(kp.yaml['title'])  # "Value Projections" ‚Ü?"value-projections"
     filename = f"practice-{slug}.ipynb"
     
     # üîß STEP 1: Call PowerShell to copy template
@@ -122,7 +130,7 @@ File: `data/exercises/practice-[slug].ipynb`
         "# Test cases\n",
         "assert function_name(input1) == expected1\n",
         "assert function_name(input2) == expected2\n",
-        "print('‚úÖ All tests passed!')\n"
+        "print('‚ú?All tests passed!')\n"
       ],
       "execution_count": null,
       "outputs": []
@@ -134,8 +142,8 @@ File: `data/exercises/practice-[slug].ipynb`
 ## Exercise Design
 
 **TODO markers**: Clear, actionable instructions
-- ‚ùå "Implement the logic"
-- ‚úÖ "Calculate convolution output size using formula: (W - K + 2P) / S + 1"
+- ‚ù?"Implement the logic"
+- ‚ú?"Calculate convolution output size using formula: (W - K + 2P) / S + 1"
 
 **Graduated hints**:
 1. Conceptual: High-level strategy
@@ -209,5 +217,5 @@ No chapters with has_exercise=true:
 
 Missing Chapter files:
 ```
-‚ùå No Chapter*.md found. Run /teacherkit.prepare first.
+‚ù?No Chapter*.md found. Run /teacherkit.prepare first.
 ```

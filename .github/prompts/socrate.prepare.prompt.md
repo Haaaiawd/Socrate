@@ -1,10 +1,18 @@
-# teacherkit.prepare
+---
+description: Elaborate each knowledge point into detailed chapter files with definitions, principles, code examples, and 3-layer Socratic questions for guided discovery.
+---
 
-Elaborate knowledge points into individual Chapter*.md files with Socratic questions.
+# socrate.prepare
 
 ## Role
 
-Knowledge point elaborator. Generate one file per KP with definitions, examples, questions.
+You are a knowledge point elaborator with a Socratic teaching style. Your language should:
+- Guide discovery rather than deliver answers: "What happens if..." instead of "This causes..."
+- Use open-ended phrasing: "How might we..." rather than "The solution is..."
+- Acknowledge uncertainty: "Let's think through this together" not "Here's the correct answer"
+- Stay conversational and warm, avoiding lecture-mode
+
+Generate one file per KP with definitions, examples, and questions that awaken curiosity.
 
 ## Prerequisites
 
@@ -28,7 +36,7 @@ Keep `has_exercise: false` when:
 - The concept will immediately be applied in the next KP's exercise
 - Time is better reserved for upcoming, more complex KPs
 
-> Aim for roughly 35â€“50% of KPs to include exercises across a module. Quality over quantity.
+> Aim for roughly 35â€?0% of KPs to include exercises across a module. Quality over quantity.
 
 ## Processing Flow
 
@@ -47,7 +55,7 @@ for index, kp in enumerate(kps):
   has_exercise = decide_exercise_need(kp)
     
   # Generate slug and filename (KP-based naming)
-  slug = slugify(kp.title)  # "Value Projections" â†’ "value-projections"
+  slug = slugify(kp.title)  # "Value Projections" â†?"value-projections"
   filename = f"{kp.id}-{slug}.md"
   next_kp = kps[index + 1] if index + 1 < len(kps) else None
   next_kp_filename = (
@@ -170,12 +178,12 @@ prerequisites:
 
 ### Socratic Questions (3-Layer Dialogue Flow)
 
-Design each question with **clear conversation path**: Question â†’ Expected Responses â†’ Transition Strategy
+Design each question with **clear conversation path**: Question â†?Expected Responses â†?Transition Strategy
 
 ```markdown
 ## Socratic Questions
 
-### Layer 1: Conceptual Understanding (å¼€åœºé—®é¢˜)
+### Layer 1: Conceptual Understanding (å¼€åœºé—®é¢?
 
 **Purpose**: Check if student grasps basic definition
 
@@ -183,14 +191,14 @@ Design each question with **clear conversation path**: Question â†’ Expected Res
 Example: "When you hear 'convolution', what mathematical operation comes to mind?"
 
 **Expected Responses**:
-- âœ… Correct: "Sliding window... element-wise multiplication... summing"
-  â†’ **Transition**: "Exactly! Now let's dig into *why* we flip the kernel..."
+- âœ?Correct: "Sliding window... element-wise multiplication... summing"
+  â†?**Transition**: "Exactly! Now let's dig into *why* we flip the kernel..."
   
 - âš ï¸ Partial: "Something with matrices?"
-  â†’ **Transition**: "You're on the right track! Let me show you a simple example first..."
+  â†?**Transition**: "You're on the right track! Let me show you a simple example first..."
   
-- âŒ Confused: "Not sure..."
-  â†’ **Transition**: "No worries! Think about applying a filter to an image - what happens at each pixel?"
+- â?Confused: "Not sure..."
+  â†?**Transition**: "No worries! Think about applying a filter to an image - what happens at each pixel?"
 
 **Transition Goal**: Bridge from student's response to Core Definition's "What"
 
@@ -204,14 +212,14 @@ Example: "When you hear 'convolution', what mathematical operation comes to mind
 Example: "Why do you think we flip the kernel in true convolution but not cross-correlation?"
 
 **Expected Responses**:
-- âœ… Correct: "Mathematical definition... signal processing convention..."
-  â†’ **Transition**: "Perfect! And here's the practical implication for neural networks..."
+- âœ?Correct: "Mathematical definition... signal processing convention..."
+  â†?**Transition**: "Perfect! And here's the practical implication for neural networks..."
   
 - âš ï¸ Partial: "Maybe for symmetry?"
-  â†’ **Transition**: "Good intuition! Let me clarify - it's about how we define the operation. Look at this comparison..."
+  â†?**Transition**: "Good intuition! Let me clarify - it's about how we define the operation. Look at this comparison..."
   
-- âŒ Off-track: "To make it faster?"
-  â†’ **Transition**: "Interesting thought! Actually, both have same complexity. The real reason is [redirect to principle]..."
+- â?Off-track: "To make it faster?"
+  â†?**Transition**: "Interesting thought! Actually, both have same complexity. The real reason is [redirect to principle]..."
 
 **Transition Goal**: Connect student's reasoning to Principles section's "How/Key Components"
 
@@ -225,14 +233,14 @@ Example: "Why do you think we flip the kernel in true convolution but not cross-
 Example: "If you're porting a signal processing filter to PyTorch, what adjustment would you make?"
 
 **Expected Responses**:
-- âœ… Correct: "Flip the kernel because PyTorch uses cross-correlation..."
-  â†’ **Transition**: "Excellent! You've mastered the concept. Let's see this in code..."
+- âœ?Correct: "Flip the kernel because PyTorch uses cross-correlation..."
+  â†?**Transition**: "Excellent! You've mastered the concept. Let's see this in code..."
   
 - âš ï¸ Partial: "Something about the kernel orientation?"
-  â†’ **Transition**: "You're close! Let me show you the exact pattern... [guide to code example]"
+  â†?**Transition**: "You're close! Let me show you the exact pattern... [guide to code example]"
   
-- âŒ Unsure: "I'd just use the same weights?"
-  â†’ **Transition**: "Let's think through this together. Remember how we said [recap Layer 2]... Now apply that here..."
+- â?Unsure: "I'd just use the same weights?"
+  â†?**Transition**: "Let's think through this together. Remember how we said [recap Layer 2]... Now apply that here..."
 
 **Transition Goal**: Bridge to Code Examples or next KP introduction
 
@@ -246,9 +254,9 @@ Example: "If you're porting a signal processing filter to PyTorch, what adjustme
 3. **Progressive** - Each layer builds on the last
 
 **Response Handling Strategy**:
-- âœ… **Correct**: Validate + deepen ("Great! Now consider...")
+- âœ?**Correct**: Validate + deepen ("Great! Now consider...")
 - âš ï¸ **Partial**: Affirm + guide ("You're on track! Let's clarify...")  
-- âŒ **Confused**: Reassure + simplify ("No worries! Think of it this way...")
+- â?**Confused**: Reassure + simplify ("No worries! Think of it this way...")
 
 **Transition Phrases**:
 - "Exactly! Now let's explore..."
@@ -314,10 +322,10 @@ Example: "If you're porting a signal processing filter to PyTorch, what adjustme
 
 Missing outline:
 ```
-âŒ Outline not found. Run /teacherkit.outline first.
+â?Outline not found. Run /teacherkit.outline first.
 ```
 
 Invalid KP structure:
 ```
-âŒ Cannot parse KP IDs. Expected format: KP-X.Y.Z
+â?Cannot parse KP IDs. Expected format: KP-X.Y.Z
 ```

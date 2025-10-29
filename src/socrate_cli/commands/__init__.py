@@ -1,5 +1,5 @@
 """
-TeacherKit CLI Commands
+Socrate CLI Commands
 
 This package contains all CLI command implementations.
 """

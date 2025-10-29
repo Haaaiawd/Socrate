@@ -4,7 +4,12 @@
         "speckit.specify": true,
         "speckit.plan": true,
         "speckit.tasks": true,
-        "speckit.implement": true
+        "speckit.implement": true,
+        "socrate.outline": true,
+        "socrate.prepare": true,
+        "socrate.check": true,
+        "socrate.practice": true,
+        "socrate.lesson": true
     },
     "chat.tools.terminal.autoApprove": {
         ".specify/scripts/bash/": true,

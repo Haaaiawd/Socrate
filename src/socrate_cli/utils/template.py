@@ -117,7 +117,7 @@ def ensure_templates_exist(project_dir: Path) -> bool:
 
 def copy_prompts_to_project(project_dir: Path) -> bool:
     """
-    Copy teacherkit prompt files to project .github/prompts/ directory
+    Copy Socrate prompt files to project .github/prompts/ directory
     
     Args:
         project_dir: Project root directory
@@ -134,9 +134,9 @@ def copy_prompts_to_project(project_dir: Path) -> bool:
         # Create target directory
         target_dir.mkdir(parents=True, exist_ok=True)
         
-        # Copy teacherkit prompt files
+        # Copy Socrate prompt files
         if source_dir.exists():
-            for prompt_file in source_dir.glob("teacherkit.*.prompt.md"):
+            for prompt_file in source_dir.glob("socrate.*.prompt.md"):
                 target_file = target_dir / prompt_file.name
                 shutil.copy2(prompt_file, target_file)
         else:

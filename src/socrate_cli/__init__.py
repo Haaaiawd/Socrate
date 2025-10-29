@@ -1,7 +1,7 @@
 """
-TeacherKit CLI - AI-powered Socratic teaching system
+Socrate CLI - AI-powered Socratic teaching system
 
-Entry point for the teacherkit command-line interface.
+Entry point for the socrate command-line interface.
 """
 
 import typer
@@ -12,7 +12,7 @@ from rich.panel import Panel
 from .commands import init, config, update
 
 app = typer.Typer(
-    name="teacherkit",
+    name="socrate",
     help="AI-powered Socratic teaching system for interactive learning",
     add_completion=False,
     rich_markup_mode="rich",
@@ -25,13 +25,13 @@ app.add_typer(config.app, name="config")
 
 console = Console(legacy_windows=True)  # Enable Windows PowerShell compatibility
 
-__version__ = "0.1.0"
+__version__ = "0.2.0"
 
 
 def version_callback(value: bool) -> None:
     """Display version and exit."""
     if value:
-        console.print(f"[bold cyan]TeacherKit[/bold cyan] version [bold]{__version__}[/bold]")
+        console.print(f"[bold cyan]Socrate[/bold cyan] version [bold]{__version__}[/bold]")
         raise typer.Exit()
 
 
@@ -47,10 +47,10 @@ def main(
     ),
 ) -> None:
     """
-    TeacherKit - AI-powered Socratic teaching system
+    Socrate - AI-powered Socratic teaching system
     
-    Initialize learning repositories and configure prerequisites for
-    interactive AI-guided teaching sessions.
+    Initialize learning repositories and guide students through
+    interactive AI-powered Socratic dialogues.
     """
     pass
 

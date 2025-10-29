@@ -52,7 +52,7 @@ def init_repository(project_dir: Path, initial_commit: bool = True) -> Optional[
                 repo.index.add([".gitignore"])
             
             # Create initial commit
-            repo.index.commit("chore: initialize TeacherKit project")
+            repo.index.commit("chore: initialize Socrate project")
         
         return repo
     

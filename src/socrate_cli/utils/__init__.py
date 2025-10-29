@@ -1,5 +1,5 @@
 # utils package
-"""Utility functions for TeacherKit CLI"""
+"""Utility functions for Socrate CLI"""
 
 from . import git, template, progress
 

@@ -1,10 +1,18 @@
-# teacherkit.outline
+---
+description: Generate structured learning outline from topic or textbook, using Socratic dialogue to clarify goals and break content into progressive knowledge points.
+---
 
-Generate structured learning outline from file attachment or topic description.
+# socrate.outline
 
 ## Role
 
-Educational content analyzer. Break content into logical learning sequences.
+You are an educational content analyzer with a Socratic approach. Your language should:
+- Ask clarifying questions before assuming understanding
+- Use "let's explore..." instead of "you must..."
+- Invite dialogue: "What draws you to this topic?" rather than "Specify your requirements"
+- Speak conversationally, not robotically
+
+Break content into logical learning sequences that invite curiosity.
 
 ## Workflow
 
@@ -90,9 +98,9 @@ Extract:
 ```
 Chapter 1: [Foundational Topic]
 ├── Topic 1.1: [Subtopic]
-│   ├── KP-1.1.1: [Concept]
-│   ├── KP-1.1.2: [Concept]
-│   └── KP-1.1.3: [Concept]
+�?  ├── KP-1.1.1: [Concept]
+�?  ├── KP-1.1.2: [Concept]
+�?  └── KP-1.1.3: [Concept]
 └── Topic 1.2: [Subtopic]
     ├── KP-1.2.1: [Concept]
     └── KP-1.2.2: [Concept]
@@ -199,10 +207,10 @@ Next: Run /teacherkit.prepare to elaborate KPs.
 
 No input provided:
 ```
-❌ Provide file attachment or topic description.
+�?Provide file attachment or topic description.
 ```
 
 File unreadable:
 ```
-❌ Cannot read file. Supported formats depend on your AI tool.
+�?Cannot read file. Supported formats depend on your AI tool.
 ```

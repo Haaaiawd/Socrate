@@ -1,5 +1,5 @@
 # init.py
-"""teacherkit init command: Initialize new teaching project"""
+"""socrate init command: Initialize new learning project"""
 
 from pathlib import Path
 from typing import Optional
@@ -19,26 +19,20 @@ console = Console(legacy_windows=True)  # Enable Windows PowerShell compatibilit
 
 
 def _print_logo():
-    """Print TeacherKit ASCII logo"""
+    """Print Socrate ASCII logo"""
     logo = r"""
     ╔════════════════════════════════════════════════════╗
     ║                                                    ║
-    ║   ████████╗███████╗ █████╗  ██████╗██╗  ██╗       ║
-    ║   ╚══██╔══╝██╔════╝██╔══██╗██╔════╝██║  ██║       ║
-    ║      ██║   █████╗  ███████║██║     ███████║       ║
-    ║      ██║   ██╔══╝  ██╔══██║██║     ██╔══██║       ║
-    ║      ██║   ███████╗██║  ██║╚██████╗██║  ██║       ║
-    ║      ╚═╝   ╚══════╝╚═╝  ╚═╝ ╚═════╝╚═╝  ╚═╝       ║
+    ║   ███████╗ ██████╗  ██████╗██████╗  █████╗ ████████╗███████╗ ║
+    ║   ██╔════╝██╔═══██╗██╔════╝██╔══██╗██╔══██╗╚══██╔══╝██╔════╝ ║
+    ║   ███████╗██║   ██║██║     ██████╔╝███████║   ██║   █████╗   ║
+    ║   ╚════██║██║   ██║██║     ██╔══██╗██╔══██║   ██║   ██╔══╝   ║
+    ║   ███████║╚██████╔╝╚██████╗██║  ██║██║  ██║   ██║   ███████╗ ║
+    ║   ╚══════╝ ╚═════╝  ╚═════╝╚═╝  ╚═╝╚═╝  ╚═╝   ╚═╝   ╚══════╝ ║
     ║                                                    ║
-    ║   ██╗  ██╗██╗████████╗                            ║
-    ║   ██║ ██╔╝██║╚══██╔══╝                            ║
-    ║   █████╔╝ ██║   ██║                               ║
-    ║   ██╔═██╗ ██║   ██║                               ║
-    ║   ██║  ██╗██║   ██║                               ║
-    ║   ╚═╝  ╚═╝╚═╝   ╚═╝                               ║
-    ║                                                    ║
-    ║        AI-Powered Socratic Teaching System        ║
-    ║                   Version 0.1.0                   ║
+    ║        🏛️  Learn Like Socrates Taught  🏛️          ║
+    ║           Wisdom Through Questions                 ║
+    ║                 Version 0.2.0                      ║
     ║                                                    ║
     ╚════════════════════════════════════════════════════╝
     """
@@ -63,7 +57,7 @@ def init_command(
     )
 ):
     """
-    Initialize a new TeacherKit teaching project
+    Initialize a new Socrate learning project
     
     Creates project structure with templates and configuration files.
     Optionally initializes Git repository.
@@ -124,6 +118,11 @@ def init_command(
         _create_config_file(target_dir)
         console.print("[green]✓[/green]")
         
+        # Step 6.5: Create VS Code settings
+        console.print("  [bold blue]🔧 Configuring VS Code...[/bold blue]", end=" ")
+        _create_vscode_settings(target_dir)
+        console.print("[green]✓[/green]")
+        
         # Step 7: Initialize Git (optional)
         if not no_git:
             console.print("  [bold blue]🔧 Initializing Git repository...[/bold blue]", end=" ")
@@ -154,6 +153,7 @@ def _create_directory_structure(project_dir: Path):
         ".specify/scripts/powershell",
         ".specify/templates",
         ".github/prompts",
+        ".vscode",
         "data/outlines",
         "data/chapters",
         "data/exercises",
@@ -193,7 +193,7 @@ def _create_config_file(project_dir: Path):
     if config_path.exists():
         return  # Don't overwrite existing config
     
-    default_config = """# TeacherKit Configuration
+    default_config = """# Socrate Configuration
 
 # AI Model Settings
 model:
@@ -204,7 +204,7 @@ model:
 
 # Teaching Style
 teaching:
-  style: socratic  # Question-driven teaching approach
+  style: socratic  # Question-driven dialogue approach
   patience_level: high  # How many hints before revealing answers
   difficulty_auto_adjust: true  # Adjust difficulty based on student progress
 
@@ -219,10 +219,36 @@ paths:
 # Logging
 logging:
   level: INFO  # DEBUG, INFO, WARN, ERROR
-  file: logs/teacherkit.log
+  file: logs/socrate.log
 """
     
     config_path.write_text(default_config, encoding="utf-8")
+
+
+def _create_vscode_settings(project_dir: Path):
+    """Create VS Code settings.json with Copilot auto-approval configuration"""
+    vscode_dir = project_dir / ".vscode"
+    settings_path = vscode_dir / "settings.json"
+    
+    if settings_path.exists():
+        return  # Don't overwrite existing settings
+    
+    vscode_settings = """{
+    "chat.promptFilesRecommendations": {
+        "socrate.outline": true,
+        "socrate.prepare": true,
+        "socrate.check": true,
+        "socrate.practice": true,
+        "socrate.lesson": true
+    },
+    "chat.tools.terminal.autoApprove": {
+        ".specify/scripts/bash/": true,
+        ".specify/scripts/powershell/": true
+    }
+}
+"""
+    
+    settings_path.write_text(vscode_settings, encoding="utf-8")
 
 
 def _init_git_repository(project_dir: Path):
@@ -238,7 +264,7 @@ def _init_git_repository(project_dir: Path):
         repo.index.add([".specify", ".github", "data", "logs"])
         
         # Create initial commit
-        repo.index.commit("chore: initialize TeacherKit project\n\nCreated by `teacherkit init`")
+        repo.index.commit("chore: initialize Socrate project\n\nCreated by `socrate init`")
         console.print("[green]✓[/green]")
     else:
         console.print("[yellow]✗[/yellow] [dim](failed)[/dim]")
@@ -262,9 +288,9 @@ def _print_next_steps(project_dir: Path):
     console.print(f"     [cyan]code .[/cyan]\n")
     
     console.print(f"  [bold]{step_num + 1}.[/bold] Start learning workflow:")
-    console.print("     [cyan]Open Copilot Chat → /teacherkit.outline[/cyan]\n")
+    console.print("     [cyan]Open Copilot Chat → /socrate.outline[/cyan]\n")
     
     console.print(f"  [bold]{step_num + 2}.[/bold] Try the complete flow:")
-    console.print("     [dim]/teacherkit.outline → /teacherkit.prepare → /teacherkit.practice → /teacherkit.lesson[/dim]\n")
+    console.print("     [dim]/socrate.outline → /socrate.prepare → /socrate.practice → /socrate.lesson[/dim]\n")
     
     console.print("[dim]📖 Need help? Check README.md for detailed guide[/dim]\n")

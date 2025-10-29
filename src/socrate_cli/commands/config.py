@@ -1,5 +1,5 @@
 # config.py
-"""teacherkit config command: Manage project configuration"""
+"""socrate config command: Manage project configuration"""
 
 from pathlib import Path
 from typing import Optional
@@ -13,7 +13,7 @@ from ..utils.progress import print_success, print_error, print_warning, print_in
 
 
 console = Console()
-app = typer.Typer(help="Manage TeacherKit configuration")
+app = typer.Typer(help="Manage Socrate configuration")
 
 
 @app.command("show")
@@ -31,7 +31,7 @@ def show_config(
     
     if not config_path.exists():
         print_error(f"Configuration not found at {config_path}")
-        print_info("Run 'teacherkit init' to initialize project")
+        print_info("Run 'socrate init' to initialize project")
         raise typer.Exit(1)
     
     try:
@@ -204,7 +204,7 @@ def list_textbooks(
         
         if not textbooks:
             print_warning("No textbooks registered")
-            print_info("Use 'teacherkit config add-textbook' to register a textbook")
+            print_info("Use 'socrate config add-textbook' to register a textbook")
             return
         
         # Create table
