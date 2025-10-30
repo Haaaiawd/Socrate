@@ -37,20 +37,25 @@ Socrate 是一个基于苏格拉底式对话法的 AI 教学助手 CLI 工具。
 
 ### 安装
 
-使用 [uv](https://github.com/astral-sh/uv) 安装（推荐）：
+使用 [uv](https://github.com/astral-sh/uv) 从 Git 仓库安装（推荐）：
 
 ```bash
 # 安装 uv（如果尚未安装）
 curl -LsSf https://astral.sh/uv/install.sh | sh
 
-# 安装 Socrate
-uv tool install socrate
+# 从 GitHub 安装 Socrate
+uv tool install socrate --from git+https://github.com/Haaaiawd/Socrate.git
 ```
 
-或使用 pip：
+或使用传统方式：
 
 ```bash
-pip install socrate
+# 克隆仓库
+git clone https://github.com/Haaaiawd/Socrate.git
+cd Socrate
+
+# 安装
+pip install -e .
 ```
 
 ### 初始化学习项目
@@ -149,33 +154,6 @@ data/
 
 ---
 
-## 🛠️ 开发
-
-### 从源码安装
-
-```bash
-git clone https://github.com/socrate/socrate.git
-cd socrate
-uv pip install -e ".[dev]"
-```
-
-### 运行测试
-
-```bash
-pytest
-```
-
-### 代码检查
-
-```bash
-# 格式检查
-ruff check .
-
-# 类型检查
-mypy src/socrate_cli
-```
-
----
 
 ## 🤝 贡献
 
