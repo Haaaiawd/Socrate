@@ -247,7 +247,8 @@ def init_command(
         # Step 9 (optional): Initialize Git
         if not no_git:
             _print_step(step, total_steps, "Initializing Git repository", "progress")
-            _init_git_repository(target_dir)
+            _init_git_repository(target_dir, ai_type_lower)
+            _print_step(step, total_steps, "Initializing Git repository", "success")
             step += 1
         
         console.print()  # Empty line
@@ -431,7 +432,7 @@ data/
     gitignore_path.write_text(gitignore_content, encoding="utf-8")
 
 
-def _init_git_repository(project_dir: Path):
+def _init_git_repository(project_dir: Path, ai_type: str = "copilot"):
     """Initialize Git repository with initial commit"""
     if not check_git_installed():
         console.print("[yellow]✗[/yellow] [dim](Git not found)[/dim]")
@@ -440,8 +441,13 @@ def _init_git_repository(project_dir: Path):
     repo = init_repository(project_dir, initial_commit=False)
     
     if repo:
-        # Stage all created files
-        repo.index.add([".gitignore", ".specify", ".github", "data", "logs"])
+        # Stage all created files (dynamically based on AI type)
+        paths = [".gitignore", ".specify", "data", "logs"]
+        if ai_type == "copilot" or ai_type == "both":
+            paths.append(".github")
+        if ai_type == "claude" or ai_type == "both":
+            paths.append(".claude")
+        repo.index.add(paths)
         
         # Create initial commit
         repo.index.commit("chore: initialize Socrate project\n\nCreated by `socrate init`")
