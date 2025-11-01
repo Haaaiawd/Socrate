@@ -81,6 +81,30 @@ cd my-python-journey
 
 ## 📖 使用方法
 
+### AI 助手支持
+
+Socrate 同时支持 **GitHub Copilot** 和 **Claude Code**：
+
+#### GitHub Copilot（推荐）
+```bash
+# 在 VS Code Copilot Chat 中使用
+/socrate.outline          # 生成学习大纲
+/socrate.prepare          # 准备知识点
+/socrate.practice         # 生成练习
+/socrate.lesson           # 开始教学
+/socrate.check            # 质量检查
+```
+
+#### Claude Code
+```bash
+# 在 Claude Code 中使用
+/socrate.outline          # 生成学习大纲
+/socrate.prepare          # 准备知识点
+/socrate.practice         # 生成练习
+/socrate.lesson           # 开始教学
+/socrate.check            # 质量检查
+```
+
 ### 典型工作流
 
 ```bash
@@ -88,29 +112,29 @@ cd my-python-journey
 socrate init my-learning
 
 # 2. 在 AI 对话中附加教材文件，或直接描述主题
-/teacherkit.outline          # 生成学习大纲
+/socrate.outline          # 生成学习大纲
 
 # 3. 准备知识点内容
-/teacherkit.prepare          # 添加问题、示例、练习
+/socrate.prepare          # 添加问题、示例、练习
 
 # 4. 开始学习
-/teacherkit.lesson           # 苏格拉底式对话教学
+/socrate.lesson           # 苏格拉底式对话教学
 
 # 5. 暂停/恢复
 输入 "pause" 保存进度
-下次运行 /teacherkit.lesson 自动恢复
+下次运行 /socrate.lesson 自动恢复
 ```
 
 ### 三种学习方式
 
 **方式 1**：从文件学习  
-→ 附加 `.md`/`.pdf` 文件 → `/teacherkit.outline`
+→ 附加 `.md`/`.pdf` 文件 → `/socrate.outline`
 
 **方式 2**：从主题学习  
-→ `/teacherkit.outline "Python 装饰器"` → AI 生成大纲
+→ `/socrate.outline "Python 装饰器"` → AI 生成大纲
 
 **方式 3**：恢复学习  
-→ `/teacherkit.lesson` → 选择继续/回顾/重新开始
+→ `/socrate.lesson` → 选择继续/回顾/重新开始
 
 ---
 
@@ -122,15 +146,15 @@ Socrate **不是传统的 CLI 工具**。它是一组 **AI 提示词模板** 的
 
 ```
 CLI（一次性设置）          AI 提示词（真正的教师）
-├── socrate init           ├── /teacherkit.outline
+├── socrate init           ├── /socrate.outline
 │   └── 设置文件夹          │   └── 分析文件/主题 → 创建课程计划
-└── socrate config         ├── /teacherkit.prepare
+└── socrate config         ├── /socrate.prepare
     └── 管理设置            │   └── 细化概念 → 添加苏格拉底式问题
-                          ├── /teacherkit.practice
+                          ├── /socrate.practice
                           │   └── 生成 Jupyter Notebook 练习
-                          ├── /teacherkit.lesson
+                          ├── /socrate.lesson
                           │   └── 交互式教学对话
-                          └── /teacherkit.check
+                          └── /socrate.check
                               └── 质量验证（可选）
 ```
 
@@ -161,20 +185,31 @@ data/
 
 ### 修改提示词模板
 
-所有教学行为都在 `.github/prompts/` 中定义：
+所有教学行为都在提示词文件中定义：
 
+**GitHub Copilot** (`.github/prompts/`):
 ```
 .github/prompts/
-├── teacherkit.outline.prompt.md      # 课程计划生成
-├── teacherkit.prepare.prompt.md      # 知识点细化
-├── teacherkit.lesson.prompt.md       # 苏格拉底式教学对话（850+ 行！）
-├── teacherkit.practice.prompt.md     # 练习生成
-└── teacherkit.check.prompt.md        # 质量验证
+├── socrate.outline.prompt.md      # 课程计划生成
+├── socrate.prepare.prompt.md      # 知识点细化
+├── socrate.lesson.prompt.md       # 苏格拉底式教学对话
+├── socrate.practice.prompt.md     # 练习生成
+└── socrate.check.prompt.md        # 质量验证
+```
+
+**Claude Code** (`.claude/commands/`):
+```
+.claude/commands/
+├── socrate.outline.md      # 课程计划生成
+├── socrate.prepare.md      # 知识点细化
+├── socrate.lesson.md       # 苏格拉底式教学对话
+├── socrate.practice.md     # 练习生成
+└── socrate.check.md        # 质量验证
 ```
 
 **自定义教学风格**：
-1. 编辑相关的 `.prompt.md` 文件
-2. 重新运行 `socrate init` 复制更新的提示词
+1. 编辑相关的提示词文件
+2. 重新运行 `socrate update` 更新到项目
 3. 用新的学习会话测试
 
 
@@ -185,7 +220,9 @@ data/
 ```
 socrate/
 ├── .github/
-│   └── prompts/           # AI 提示词模板（核心功能）
+│   └── prompts/           # GitHub Copilot 提示词模板
+├── .claude/
+│   └── commands/          # Claude Code 命令文件
 ├── src/
 │   └── socrate_cli/       # CLI 命令实现
 │       ├── __init__.py    # 主入口点

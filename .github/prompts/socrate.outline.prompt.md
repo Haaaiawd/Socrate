@@ -2,7 +2,13 @@
 description: Generate structured learning outline from topic or textbook, using Socratic dialogue to clarify goals and break content into progressive knowledge points.
 ---
 
-# socrate.outline
+## User Input
+
+```text
+$ARGUMENTS
+```
+
+You **MUST** consider the user input before proceeding (if not empty).
 
 ## Role
 
@@ -40,18 +46,18 @@ This creates: `data/outlines/deep-learning-outline.md` with structure placeholde
 **Method 1 - File attachment**:
 ```
 [Attach file - format depends on your AI tool]
-/teacherkit.outline
+/socrate.outline
 ```
 
 **Method 2 - Topic description**:
 ```
-/teacherkit.outline "Deep learning CNNs: convolution, pooling, architectures"
+/socrate.outline "Deep learning CNNs: convolution, pooling, architectures"
 ```
 
 **Method 3 - Hybrid**:
 ```
 [Attach file]
-/teacherkit.outline "Focus on practical implementation"
+/socrate.outline "Focus on practical implementation"
 ```
 
 ## Clarification (if needed)
@@ -97,51 +103,71 @@ Extract:
 
 ```
 Chapter 1: [Foundational Topic]
-├── Topic 1.1: [Subtopic]
-�?  ├── KP-1.1.1: [Concept]
-�?  ├── KP-1.1.2: [Concept]
-�?  └── KP-1.1.3: [Concept]
-└── Topic 1.2: [Subtopic]
-    ├── KP-1.2.1: [Concept]
-    └── KP-1.2.2: [Concept]
+??? Topic 1.1: [Subtopic]
+?   ??? KP-1.1.1: [Concept]
+?   ??? KP-1.1.2: [Concept]
+?   ??? KP-1.1.3: [Concept]
+??? Topic 1.2: [Subtopic]
+    ??? KP-1.2.1: [Concept]
 
 Chapter 2: [Advanced Topic]
-...
+??? Topic 2.1: [Subtopic]
+    ??? KP-2.1.1: [Concept]
+    ??? KP-2.1.2: [Concept]
 ```
 
-Rules:
-- 3-5 chapters
-- 2-4 topics per chapter
-- 2-5 KPs per topic
-- Total 15-30 KPs (avoid fragmentation)
+**Rules**:
+- Chapters = thematic groups (3-5 chapters)
+- Topics = subsections within chapters
+- KPs = atomic teachable units (30-45min each)
+- Prerequisites flow logically
 
-### Stage 3: Teaching Plan
+### Stage 3: Define Knowledge Points
 
-For each KP:
-- Introduction strategy (question/scenario/contrast)
-- Difficulty (easy/medium/hard)
-- Estimated time (15-60 minutes)
-- Prerequisites
-
-### Stage 4: Review Phase
-
-Design practice-heavy review covering all KPs:
-- Grouped by chapter
-- Comprehensive exercises
-- Integration projects
-
-## Output File
-
-Path: `data/outlines/[sanitized-topic-name]-outline.md`
-
+For each KP, specify:
 ```yaml
+id: KP-1.1.1
+title: "Concept Name"
+difficulty: easy/medium/hard
+estimated_time: "30min"
+prerequisites: ["concept-A", "concept-B"]
+introduction_approach: "question" | "scenario" | "contrast"
+```
+
+**Introduction Approaches**:
+- **Question**: Start with student thinking (e.g., "What happens when...")
+- **Scenario**: Real-world problem (e.g., "Imagine you're building...")
+- **Contrast**: Compare/contrast (e.g., "Unlike X, Y does...")
+
+### Stage 4: Add Review Phases
+
+After main chapters, add:
+```markdown
+## Review Phase: [Topic] Mastery
+
+### Review 1: [Chapter 1-2 Integration]
+- Combine KP-1.1.1, KP-1.1.2, KP-1.2.1
+- Build [mini-project]
+- Time: 2 hours
+
+### Final Project: [Comprehensive Application]
+- Integrate all chapters
+- Build [complete project]
+- Time: 4-6 hours
+```
+
+## Output Format
+
+Use `.specify/templates/outline-template.md` structure:
+
+```markdown
 ---
-title: "Deep Learning: Convolutional Neural Networks"
-topic: "Deep Learning"
+title: "[Title]"
+topic: "[Main Topic]"
 target_audience: "intermediate"
 difficulty: "intermediate"
-estimated_total_hours: 12
-generated_date: "YYYY-MM-DD"
+estimated_total_hours: [X]
+generated_date: "[YYYY-MM-DD]"
 ---
 
 # Learning Outline: [Title]
@@ -157,60 +183,43 @@ generated_date: "YYYY-MM-DD"
   - Difficulty: medium
   - Time: 30min
   - Prerequisites: [List]
-  - Introduction: [Question/Scenario/Contrast]
-
-- **KP-1.1.2**: [Concept Name]
-  ...
-
-### Topic 1.2: [Subtopic Name]
-...
-
-## Chapter 2: [Advanced Topic]
-...
+  - Introduction: [Question/Scenario/Contrast approach]
+  
+[... continue with all chapters ...]
 
 ## Review Phase: [Topic] Mastery
 
-**Practice Focus**: Apply all concepts to real problems.
-
-### Review 1: [Chapter 1 Integration]
-- Combine KP-1.1.1, KP-1.1.2, KP-1.1.3
-- Build [mini-project]
-- Time: 2 hours
-
-### Review 2: [Chapter 2 Integration]
-...
-
-### Final Project: [Comprehensive Application]
-- Integrate all chapters
-- Build [complete project]
-- Time: 4-6 hours
+[... review projects ...]
 ```
 
-## Output Report
+## Quality Checks
 
+Before finalizing:
+- [ ] Each KP is atomic (single concept)
+- [ ] Prerequisites flow logically
+- [ ] Total time estimate reasonable
+- [ ] Introduction approaches varied
+- [ ] Difficulty progression smooth
+- [ ] Review phase integrates concepts
+
+## Report Completion
+
+Output:
 ```
-📚 Outline Generated
+? Outline generated: data/outlines/[topic]-outline.md
 
-File: data/outlines/deep-learning-cnn-outline.md
+?? Statistics:
+- Chapters: X
+- Topics: Y
+- Knowledge Points: Z
+- Estimated Total Time: N hours
 
-Structure:
-- [X] chapters
-- [Y] topics
-- [Z] knowledge points
-
-Estimated: [H] hours total
-
-Next: Run /teacherkit.prepare to elaborate KPs.
+?? Next Steps:
+1. Review outline structure
+2. Run /socrate.prepare to create detailed chapter files
+3. Run /socrate.practice to generate exercises
 ```
 
-## Error Handling
+## Context
 
-No input provided:
-```
-�?Provide file attachment or topic description.
-```
-
-File unreadable:
-```
-�?Cannot read file. Supported formats depend on your AI tool.
-```
+$ARGUMENTS

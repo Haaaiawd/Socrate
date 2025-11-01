@@ -1,331 +1,265 @@
 ---
-description: Elaborate each knowledge point into detailed chapter files with definitions, principles, code examples, and 3-layer Socratic questions for guided discovery.
+description: Prepare detailed chapter files with Socratic questions, teaching materials, and examples for each knowledge point from the outline.
 ---
 
-# socrate.prepare
+## User Input
+
+```text
+$ARGUMENTS
+```
+
+You **MUST** consider the user input before proceeding (if not empty).
 
 ## Role
 
-You are a knowledge point elaborator with a Socratic teaching style. Your language should:
-- Guide discovery rather than deliver answers: "What happens if..." instead of "This causes..."
-- Use open-ended phrasing: "How might we..." rather than "The solution is..."
-- Acknowledge uncertainty: "Let's think through this together" not "Here's the correct answer"
-- Stay conversational and warm, avoiding lecture-mode
-
-Generate one file per KP with definitions, examples, and questions that awaken curiosity.
+You are a Socratic teaching content designer. Transform outline knowledge points into rich, question-driven learning materials that guide discovery rather than lecture.
 
 ## Prerequisites
 
-- `data/outlines/[topic]-outline.md`
+- `data/outlines/[topic]-outline.md` must exist (from /socrate.outline)
+- `.specify/templates/chapter-template.md` available
 
-Command: `/teacherkit.prepare`
+## Workflow
 
-## Exercise Selection Guidelines
+### Step 1: Load Context
 
-Decide per KP whether `has_exercise` should be `true`. Focus on **impactful practice**, not quotas.
+1. Find the latest outline:
+   ```powershell
+   Get-ChildItem data/outlines/*.md | Sort-Object LastWriteTime -Descending | Select-Object -First 1
+   ```
 
-Mark `has_exercise: true` when **any** of these apply:
-- Skill requires procedural fluency (calculations, coding patterns, derivations)
-- Concept is high-stakes or commonly misunderstood and benefits from hands-on reinforcement
-- Learner needs to translate theory into implementation or analysis
-- KP introduces tools/frameworks that demand experimentation
+2. Parse outline to extract:
+   - All knowledge points (KP-X.Y.Z)
+   - Titles and metadata
+   - Prerequisites
+   - Introduction approaches
 
-Keep `has_exercise: false` when:
-- KP serves as conceptual overview, history, comparison, or glossary
-- Practice would duplicate a prior exercise's skill
-- The concept will immediately be applied in the next KP's exercise
-- Time is better reserved for upcoming, more complex KPs
+### Step 2: Generate Chapter Files
 
-> Aim for roughly 35â€?0% of KPs to include exercises across a module. Quality over quantity.
-
-## Processing Flow
-
-**IMPORTANT**: For each KP, call PowerShell script to copy template first, then edit the file.
-
-```python
-# (Pseudocode - illustrates logic flow)
-
-# Parse outline
-outline = load_yaml_and_markdown("data/outlines/[topic]-outline.md")
-kps = extract_knowledge_points(outline)
-
-# Generate Chapter files
-for index, kp in enumerate(kps):
-  # Determine exercise flag (quality-based)
-  has_exercise = decide_exercise_need(kp)
-    
-  # Generate slug and filename (KP-based naming)
-  slug = slugify(kp.title)  # "Value Projections" â†?"value-projections"
-  filename = f"{kp.id}-{slug}.md"
-  next_kp = kps[index + 1] if index + 1 < len(kps) else None
-  next_kp_filename = (
-    f"{next_kp.id}-{slugify(next_kp.title)}.md" if next_kp else None
-  )
-    
-  # ðŸ”§ STEP 1: Call PowerShell to copy template
-    run_terminal_command(
-        f"Copy-Chapter-Template.ps1 -KpId '{kp.id}' -Title '{kp.title}'"
-    )
-  # This creates: data/chapters/{kp.id}-{slug}.md from template
-    
-    # ðŸ”§ STEP 2: Edit the copied file
-  chapter_file = f"data/chapters/{filename}"
-    update_yaml_frontmatter(chapter_file, kp, has_exercise)
-    fill_core_definition(chapter_file, kp)
-    fill_principles(chapter_file, kp)
-    fill_code_examples(chapter_file, kp)
-    fill_socratic_questions(chapter_file, kp)
-    fill_teaching_materials(chapter_file, kp)
-  update_next_steps_section(chapter_file, has_exercise, next_kp_filename)
+**Option 1 (Recommended): Batch Create All Chapters**
+   
+```powershell
+.\.specify\scripts\powershell\Prepare-Chapters.ps1
 ```
 
-**PowerShell Script**: `.specify/scripts/powershell/Copy-Chapter-Template.ps1`
+This automatically reads the latest outline and creates all chapter files at once.
 
-## Next Steps Section
+**Option 2: Create Individual Chapters**
 
-Each Chapter file ends with:
+For each knowledge point in the outline:
 
-```
-## Next Steps
-- **Practice**: [...]
-- **Next KP**: [...]
-```
+1. **Create chapter file**:
+   ```powershell
+   .\.specify\scripts\powershell\Copy-Chapter-Template.ps1 -KpId "KP-1.1.1" -Title "Concept Name"
+   ```
+   
+   This creates: `data/chapters/Chapter-KP-1.1.1.md`
 
-Update this block while editing:
-- If `has_exercise` is `true`, replace the Practice bullet with the generated notebook name (e.g., `practice-value-projections.ipynb`).
-- If `has_exercise` is `false`, replace the Practice bullet with `Not required for this KP (continue to next KP).`
-- Always set **Next KP** to the upcoming KP file name (e.g., `KP-1.2.1-attention-heads.md`).
-- For the final KP, set **Next KP** to `None (this module is complete)` or similar acknowledgement.
-
-## File Naming
-
-Format: `{KP-ID}-{Title-Slug}.md`
-
-Examples:
-- `KP-1.1.1-convolution-basics.md`
-- `KP-1.4.2-value-projections.md`
-- `KP-2.3.1-transformer-encoder.md`
-
-Slug rules: lowercase, hyphen-separated, max 4 words.
-
-## YAML Frontmatter
-
-```yaml
-title: "Discrete Convolution vs. Cross-Correlation"
-kp_id: "KP-1.1.1"
-chapter: "1.1"
-topic: "Convolutional Operations Basics"
-has_exercise: false
-exercise_file: null
-difficulty: "medium"
-estimated_time: "35 minutes"
-prerequisites:
-  - "Basic linear algebra"
-  - "Introductory neural networks"
-```
-
-## Content Structure
-
-### Core Definition
+2. **Fill chapter content** following this structure:
 
 ```markdown
+---
+id: KP-1.1.1
+title: "Concept Name"
+difficulty: medium
+estimated_time: 30min
+prerequisites: ["concept-A", "concept-B"]
+has_exercise: false
+exercise_file: ""
+---
+
+# KP-1.1.1: Concept Name
+
 ## Core Definition
 
-**What**: [1-2 sentence definition, no jargon]
+**What**: [Clear, concise definition in 1-2 sentences]
 
-**Why**: [Practical importance]
+**Why It Matters**: [Practical relevance - why should students care?]
 
-**Where**: [2-3 usage contexts]
-```
+**How It Works**: [2-3 step breakdown of the mechanism]
 
-### Principle Explanation
+## Key Components
 
-```markdown
-## Principles
+1. **Component A**: [Explanation]
+   - Purpose: [Why this component exists]
+   - Behavior: [What it does]
 
-**How**:
-1. [Step 1]
-2. [Step 2]
-3. [Step 3]
+2. **Component B**: [Explanation]
+   - Purpose: [Why this component exists]
+   - Behavior: [What it does]
 
-**Key Components**:
-- **Component A**: [Description]
-- **Component B**: [Description]
-
-**Diagram** (if helpful):
-```
-[ASCII diagram]
-```
-```
-
-### Code Examples
-
-```markdown
-## Code Examples
-
-### Simple Case
-```python
-# Clear, minimal example (10-15 lines)
-[code with comments on key lines]
-```
-
-### Practical Case
-```python
-# Real-world scenario (20-30 lines)
-[code showing edge cases or variations]
-```
-```
-
-### Socratic Questions (3-Layer Dialogue Flow)
-
-Design each question with **clear conversation path**: Question â†?Expected Responses â†?Transition Strategy
-
-```markdown
 ## Socratic Questions
 
-### Layer 1: Conceptual Understanding (å¼€åœºé—®é¢?
+### Question 1: Conceptual Understanding
 
-**Purpose**: Check if student grasps basic definition
+**Question**: [Open-ended question to probe basic understanding]
 
-**Question**: [Open-ended, connects to their experience]
-Example: "When you hear 'convolution', what mathematical operation comes to mind?"
+**Expected Response Indicators**:
+- Good: [Student mentions X, Y, Z]
+- Needs guidance: [Student only mentions surface-level A]
+- Off track: [Student confuses with concept B]
 
-**Expected Responses**:
-- âœ?Correct: "Sliding window... element-wise multiplication... summing"
-  â†?**Transition**: "Exactly! Now let's dig into *why* we flip the kernel..."
-  
-- âš ï¸ Partial: "Something with matrices?"
-  â†?**Transition**: "You're on the right track! Let me show you a simple example first..."
-  
-- â?Confused: "Not sure..."
-  â†?**Transition**: "No worries! Think about applying a filter to an image - what happens at each pixel?"
+**Follow-up (if needed)**:
+- "Can you think about what happens when...?"
+- "How does this relate to [prerequisite concept]?"
 
-**Transition Goal**: Bridge from student's response to Core Definition's "What"
+**Teaching Point**: [What to reveal after student responds]
 
----
+### Question 2: Principle Exploration
 
-### Layer 2: Principle Exploration (æ·±åŒ–é—®é¢˜)
+**Question**: [Deeper "why" or "how" question]
 
-**Purpose**: Explore why/how mechanisms work
+**Expected Response Indicators**:
+- Good: [Shows understanding of mechanism]
+- Needs guidance: [Missing key principle]
+- Off track: [Fundamental misunderstanding]
 
-**Question**: [Why-focused, builds on Layer 1 answer]
-Example: "Why do you think we flip the kernel in true convolution but not cross-correlation?"
+**Follow-up (if needed)**:
+- "What do you think causes that behavior?"
+- "Compare this to [related concept]..."
 
-**Expected Responses**:
-- âœ?Correct: "Mathematical definition... signal processing convention..."
-  â†?**Transition**: "Perfect! And here's the practical implication for neural networks..."
-  
-- âš ï¸ Partial: "Maybe for symmetry?"
-  â†?**Transition**: "Good intuition! Let me clarify - it's about how we define the operation. Look at this comparison..."
-  
-- â?Off-track: "To make it faster?"
-  â†?**Transition**: "Interesting thought! Actually, both have same complexity. The real reason is [redirect to principle]..."
+**Teaching Point**: [Connect to core principles]
 
-**Transition Goal**: Connect student's reasoning to Principles section's "How/Key Components"
+### Question 3: Application
 
----
+**Question**: [Real-world scenario or problem to solve]
 
-### Layer 3: Application Scenarios (åº”ç”¨é—®é¢˜)
+**Expected Response Indicators**:
+- Good: [Applies concept correctly to new context]
+- Needs guidance: [Recognizes concept but unsure how to apply]
+- Off track: [Misapplies or uses wrong approach]
 
-**Purpose**: Test ability to apply concept to new context
+**Follow-up (if needed)**:
+- "How would you approach this if...?"
+- "What's the first step you'd take?"
 
-**Question**: [Real-world scenario, requires synthesis]
-Example: "If you're porting a signal processing filter to PyTorch, what adjustment would you make?"
+**Teaching Point**: [Bridge to practical use]
 
-**Expected Responses**:
-- âœ?Correct: "Flip the kernel because PyTorch uses cross-correlation..."
-  â†?**Transition**: "Excellent! You've mastered the concept. Let's see this in code..."
-  
-- âš ï¸ Partial: "Something about the kernel orientation?"
-  â†?**Transition**: "You're close! Let me show you the exact pattern... [guide to code example]"
-  
-- â?Unsure: "I'd just use the same weights?"
-  â†?**Transition**: "Let's think through this together. Remember how we said [recap Layer 2]... Now apply that here..."
-
-**Transition Goal**: Bridge to Code Examples or next KP introduction
-
----
-
-## Dialogue Flow Guidelines
-
-**Question Design Principles**:
-1. **Open-ended** - Avoid yes/no questions
-2. **Connect to previous** - Reference their earlier answer
-3. **Progressive** - Each layer builds on the last
-
-**Response Handling Strategy**:
-- âœ?**Correct**: Validate + deepen ("Great! Now consider...")
-- âš ï¸ **Partial**: Affirm + guide ("You're on track! Let's clarify...")  
-- â?**Confused**: Reassure + simplify ("No worries! Think of it this way...")
-
-**Transition Phrases**:
-- "Exactly! Now let's explore..."
-- "Good thinking! Building on that..."
-- "Interesting perspective! Actually..."
-- "You're close! Here's the key difference..."
-
-**Checkpoint Signals** (for AI to assess understanding):
-- Correct: Student mentions [specific keyword from Expected]
-- Partial: Student shows [general direction] but misses [key detail]
-- Confused: Student says [common misconception] or "I don't know"
-```
-
-### Teaching Materials
-
-```markdown
 ## Teaching Materials
 
-**Analogies**:
-- [Analogy 1]: [Explanation]
-- [Analogy 2]: [Explanation]
+### Analogy
 
-**Comparison**:
-| Aspect | Option A | Option B |
-|--------|----------|----------|
-| [Dim 1] | [Val] | [Val] |
-| [Dim 2] | [Val] | [Val] |
+[Concrete, relatable comparison that illuminates the concept]
 
-**Common Pitfalls**:
-1. **Pitfall**: [Misconception]
-   **Clarification**: [Correct understanding]
+Example: "Think of X like a restaurant kitchen..."
+
+### Visual Representation
+
+[Text-based diagram or description of visual model]
+
+```
+[ASCII art or structured text representation]
 ```
 
-## Content Guidelines
+### Common Pitfalls
 
-**Core Definition**:
-- What: Clear, jargon-free (12-15 words)
-- Why: Practical importance, not theoretical
-- Where: Specific contexts, not vague
+1. **Pitfall**: [Common mistake students make]
+   - **Why it happens**: [Root cause]
+   - **How to avoid**: [Concrete guidance]
 
-**Principles**:
-- 3-5 steps maximum
-- 2-4 key components
-- ASCII diagram if aids understanding
+2. **Pitfall**: [Another common error]
+   - **Why it happens**: [Root cause]
+   - **How to avoid**: [Concrete guidance]
 
-**Code Examples**:
-- Simple: Self-contained, 10-15 lines
-- Practical: Real scenario, 20-30 lines
-- Commented on complex lines only
+### Code Example (if applicable)
+
+```[language]
+# Minimal, focused example demonstrating the concept
+[code here]
+```
+
+**Key Points**:
+- [What to notice in line X]
+- [Why line Y is important]
+
+## Connection to Prerequisites
+
+- **[Prerequisite A]**: [How current concept builds on it]
+- **[Prerequisite B]**: [Relationship to current topic]
+
+## Next Steps
+
+**Practice**: [Suggested hands-on activity or thought experiment]
+
+**Next Concept**: [Link to following KP with bridge statement]
+- "Now that you understand X, we can explore how it enables Y..."
+```
+
+### Step 3: Content Quality Guidelines
 
 **Socratic Questions**:
-- 3 questions (one per layer)
-- Open-ended (avoid yes/no)
-- Include expected answer keywords
-- Checkpoint guides AI assessment
+- Start broad, narrow down
+- Build on student responses (include response branches)
+- Maximum 3-4 questions per KP
+- Each question has clear teaching payoff
 
 **Teaching Materials**:
-- 2-3 analogies (relatable to target audience)
-- Comparison table (when contrasting concepts)
-- 2-3 common pitfalls (typical misconceptions)
+- Analogies should be universally relatable
+- Examples should be minimal and focused
+- Pitfalls based on real beginner mistakes
+- Connections make prerequisites explicit
 
-## Error Handling
+**Language Style**:
+- Conversational, warm tone
+- Use "we" and "you" appropriately
+- Short paragraphs (3-4 sentences max)
+- Active voice
 
-Missing outline:
-```
-â?Outline not found. Run /teacherkit.outline first.
+### Step 4: Mark Exercise Points
+
+Every 2-3 knowledge points, mark one for exercises:
+
+```yaml
+has_exercise: true
+exercise_file: "practice-[topic]-part-1.ipynb"
 ```
 
-Invalid KP structure:
+## Batch Processing
+
+Process chapters in outline order:
+
+1. Chapter 1, Topic 1.1: All KPs
+2. Chapter 1, Topic 1.2: All KPs
+3. ...continue through outline
+
+**Progress Reporting**:
 ```
-â?Cannot parse KP IDs. Expected format: KP-X.Y.Z
+Processing Chapter 1...
+??? ? KP-1.1.1: Concept A [Chapter-KP-1.1.1.md]
+??? ? KP-1.1.2: Concept B [Chapter-KP-1.1.2.md]
+??? ? KP-1.1.3: Concept C [Chapter-KP-1.1.3.md] ?? Exercise Point
+
+Chapters created: X
+Exercise points marked: Y
 ```
+
+## Validation
+
+Before completing, verify:
+- [ ] Each chapter follows template structure
+- [ ] Socratic questions have response branches
+- [ ] Teaching materials include analogy + pitfalls
+- [ ] Prerequisites explicitly connected
+- [ ] Exercise points distributed (every 2-3 KPs)
+- [ ] Tone is conversational and welcoming
+
+## Report Completion
+
+```
+? Preparation complete!
+
+?? Summary:
+- Chapters created: X
+- Total knowledge points: Y
+- Exercise points: Z
+- Files location: data/chapters/
+
+?? Next Steps:
+1. Review a few chapter files to ensure quality
+2. Run /socrate.practice to generate exercises
+3. Run /socrate.lesson to start teaching
+```
+
+## Context
+
+$ARGUMENTS

@@ -8,7 +8,12 @@ import typer
 from rich.console import Console
 
 from ..utils.git import check_git_installed
-from ..utils.template import copy_templates_to_project, copy_prompts_to_project, copy_scripts_to_project
+from ..utils.template import (
+    copy_templates_to_project,
+    copy_prompts_to_project,
+    copy_scripts_to_project,
+    copy_claude_commands_to_project
+)
 from ..utils.progress import print_success, print_error, print_warning, confirm
 
 
@@ -23,12 +28,17 @@ def update_command(
     prompts_only: bool = typer.Option(
         False,
         "--prompts-only",
-        help="Only update prompts, skip templates and scripts"
+        help="Only update GitHub Copilot prompts"
+    ),
+    claude_only: bool = typer.Option(
+        False,
+        "--claude-only",
+        help="Only update Claude Code commands"
     ),
     scripts_only: bool = typer.Option(
         False,
         "--scripts-only",
-        help="Only update scripts, skip prompts and templates"
+        help="Only update automation scripts"
     ),
     force: bool = typer.Option(
         False,
@@ -69,6 +79,16 @@ def update_command(
     console.print(f"\n[bold cyan]🔄 Updating Socrate Project[/bold cyan]")
     console.print(f"[dim]Target:[/dim] {target_dir}\n")
     
+    # Detect existing AI installations
+    has_copilot = (target_dir / ".github" / "prompts").exists()
+    has_claude = (target_dir / ".claude" / "commands").exists()
+    
+    # Validate exclusive options
+    exclusive_count = sum([prompts_only, claude_only, scripts_only])
+    if exclusive_count > 1:
+        print_error("Cannot use --prompts-only, --claude-only, and --scripts-only together")
+        raise typer.Exit(1)
+    
     # Check git status (warn if uncommitted changes)
     if check_git_installed() and (target_dir / ".git").exists():
         import subprocess
@@ -88,14 +108,15 @@ def update_command(
     # Confirm update
     if not force:
         console.print("[bold]This will update:[/bold]")
-        if not prompts_only and not scripts_only:
-            console.print("  • Prompts (.github/prompts/)")
-            console.print("  • Scripts (.specify/scripts/)")
+        if not scripts_only and not claude_only:
+            if has_copilot or prompts_only:
+                console.print("  • GitHub Copilot prompts (.github/prompts/)")
+        if not scripts_only and not prompts_only:
+            if has_claude or claude_only:
+                console.print("  • Claude Code commands (.claude/commands/)")
+        if not prompts_only and not claude_only:
+            console.print("  • Automation scripts (.specify/scripts/)")
             console.print("  • Templates (.specify/templates/)")
-        elif prompts_only:
-            console.print("  • Prompts (.github/prompts/)")
-        elif scripts_only:
-            console.print("  • Scripts (.specify/scripts/)")
         console.print()
         
         if not confirm("Proceed with update?", default=True):
@@ -110,16 +131,28 @@ def update_command(
     try:
         updated_count = 0
         
-        if not scripts_only:
-            # Update prompts
-            console.print("  [bold blue]💬 Updating prompts...[/bold blue]", end=" ")
-            if copy_prompts_to_project(target_dir):
-                console.print("[green]✓[/green]")
-                updated_count += 1
-            else:
-                console.print("[red]✗[/red]")
+        # Update GitHub Copilot prompts
+        if not scripts_only and not claude_only:
+            if has_copilot or prompts_only:
+                console.print("  [bold blue]� Updating GitHub Copilot prompts...[/bold blue]", end=" ")
+                if copy_prompts_to_project(target_dir):
+                    console.print("[green]✓[/green]")
+                    updated_count += 1
+                else:
+                    console.print("[red]✗[/red]")
         
-        if not prompts_only:
+        # Update Claude Code commands
+        if not scripts_only and not prompts_only:
+            if has_claude or claude_only:
+                console.print("  [bold blue]🤖 Updating Claude Code commands...[/bold blue]", end=" ")
+                if copy_claude_commands_to_project(target_dir):
+                    console.print("[green]✓[/green]")
+                    updated_count += 1
+                else:
+                    console.print("[red]✗[/red]")
+        
+        # Update scripts and templates
+        if not prompts_only and not claude_only:
             # Update scripts
             console.print("  [bold blue]⚙️  Updating scripts...[/bold blue]", end=" ")
             if copy_scripts_to_project(target_dir):

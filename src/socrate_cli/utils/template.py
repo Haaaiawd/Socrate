@@ -175,7 +175,6 @@ def copy_scripts_to_project(project_dir: Path) -> bool:
             "Prepare-Chapters.ps1",
             "Generate-Practice.ps1",
             "Copy-Chapter-Template.ps1",
-            "Copy-Practice-Template.ps1",
             "Update-Progress.ps1"
         ]
         
@@ -194,4 +193,39 @@ def copy_scripts_to_project(project_dir: Path) -> bool:
     
     except Exception as e:
         print(f"Error copying scripts: {e}")
+        return False
+
+
+def copy_claude_commands_to_project(project_dir: Path) -> bool:
+    """
+    Copy Claude Code command files to project .claude/commands/ directory
+    
+    Args:
+        project_dir: Project root directory
+        
+    Returns:
+        True if successful
+    """
+    try:
+        # Source commands from package .claude/commands/
+        package_root = Path(__file__).parent.parent.parent.parent
+        source_dir = package_root / ".claude" / "commands"
+        target_dir = project_dir / ".claude" / "commands"
+        
+        # Create target directory
+        target_dir.mkdir(parents=True, exist_ok=True)
+        
+        # Copy Socrate command files
+        if source_dir.exists():
+            for command_file in source_dir.glob("socrate.*.md"):
+                target_file = target_dir / command_file.name
+                shutil.copy2(command_file, target_file)
+        else:
+            print(f"Warning: Claude commands directory not found at {source_dir}")
+            return False
+        
+        return True
+    
+    except Exception as e:
+        print(f"Error copying Claude commands: {e}")
         return False

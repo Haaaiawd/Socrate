@@ -35,6 +35,8 @@ htmlcov/
 # IDE
 .vscode/
 !.vscode/prompts/
+.claude/
+!.claude/commands/
 .idea/
 *.swp
 *.swo
