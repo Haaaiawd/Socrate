@@ -68,7 +68,7 @@ foreach ($match in $kpMatches) {
     }
     
     # Call Copy-Chapter-Template.ps1
-    & "$PSScriptRoot\Copy-Chapter-Template.ps1" -ChapterId $kpId -Title $kpTitle -ProjectRoot $ProjectRoot
+    & "$PSScriptRoot\Copy-Chapter-Template.ps1" -KpId $kpId -Title $kpTitle -ProjectRoot $ProjectRoot
     
     if ($LASTEXITCODE -eq 0) {
         $created++
