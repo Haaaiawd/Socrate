@@ -285,15 +285,15 @@ Before completing, verify:
 ## Report Completion
 
 ```
-? Preparation complete!
+✅ Preparation complete!
 
-?? Summary:
+📊 Summary:
 - Chapters created: X
 - Total knowledge points: Y
 - Exercise points: Z
 - Files location: data/chapters/
 
-?? Next Steps:
+🎯 Next Steps:
 1. Review a few chapter files to ensure quality
 2. Run /socrate.practice to generate exercises
 3. Run /socrate.lesson to start teaching
