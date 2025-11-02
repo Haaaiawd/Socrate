@@ -71,9 +71,9 @@ cd my-python-journey
 # my-python-journey/
 #   .github/prompts/          ← AI 提示词模板
 #   data/
-#     outlines/               ← 生成的学习计划
-#     chapters/               ← 准备好的知识点
-#     exercises/              ← 练习代码文件
+#     outlines/               ← 生成的学习计划（含 UbD 字段）
+#     lessons/                ← 课前简短备课（UbD Lesson Plan/Runbook）
+#     assessments/            ← CFU 与 Exit Ticket（评估证据）
 #     progress.md             ← 学习进度记录
 ```
 
@@ -89,9 +89,7 @@ Socrate 同时支持 **GitHub Copilot** 和 **Claude Code**：
 ```bash
 # 在 VS Code Copilot Chat 中使用
 /socrate.outline          # 生成学习大纲
-/socrate.prepare          # 准备知识点
-/socrate.practice         # 生成练习
-/socrate.lesson           # 开始教学
+/socrate.lesson           # 先生成 UbD 备课文件；按需开始对话教学
 /socrate.check            # 质量检查
 ```
 
@@ -99,9 +97,7 @@ Socrate 同时支持 **GitHub Copilot** 和 **Claude Code**：
 ```bash
 # 在 Claude Code 中使用
 /socrate.outline          # 生成学习大纲
-/socrate.prepare          # 准备知识点
-/socrate.practice         # 生成练习
-/socrate.lesson           # 开始教学
+/socrate.lesson           # 先生成 UbD 备课文件；按需开始对话教学
 /socrate.check            # 质量检查
 ```
 
@@ -114,11 +110,9 @@ socrate init my-learning
 # 2. 在 AI 对话中附加教材文件，或直接描述主题
 /socrate.outline          # 生成学习大纲
 
-# 3. 准备知识点内容
-/socrate.prepare          # 添加问题、示例、练习
-
-# 4. 开始学习
-/socrate.lesson           # 苏格拉底式对话教学
+# 3. Lesson 阶段：先备课后上课
+/socrate.lesson           # 生成 UbD 备课文件（SWBAT/CFU/Exit Ticket/Runbook）
+#    若你回复“开始授课”，将按 Runbook 开启苏格拉底对话并在关键处插入 CFU 与 Exit Ticket
 
 # 5. 暂停/恢复
 输入 "pause" 保存进度
@@ -148,12 +142,8 @@ Socrate **不是传统的 CLI 工具**。它是一组 **AI 提示词模板** 的
 CLI（一次性设置）          AI 提示词（真正的教师）
 ├── socrate init           ├── /socrate.outline
 │   └── 设置文件夹          │   └── 分析文件/主题 → 创建课程计划
-└── socrate config         ├── /socrate.prepare
-    └── 管理设置            │   └── 细化概念 → 添加苏格拉底式问题
-                          ├── /socrate.practice
-                          │   └── 生成 Jupyter Notebook 练习
-                          ├── /socrate.lesson
-                          │   └── 交互式教学对话
+└── socrate config         ├── /socrate.lesson
+    └── 管理设置            │   └── 先生成 UbD 备课（EU/EQ/SWBAT/证据计划/Runbook），再按需对话授课
                           └── /socrate.check
                               └── 质量验证（可选）
 ```
@@ -166,11 +156,11 @@ CLI（一次性设置）          AI 提示词（真正的教师）
 data/
 ├── outlines/
 │   └── [主题]-outline.md            # 学习计划与章节结构
-├── chapters/
-│   └── Chapter*.md                  # 单个知识点文件
-├── exercises/
-│   ├── practice-[主题].py           # 练习文件
-│   └── exercises-meta.md            # 练习目录
+├── lessons/
+│   └── chapter-[n]-plan.md          # 单节 UbD 备课（Runbook/CFU/Exit Ticket 链接）
+├── assessments/
+│   ├── chapter-[n]-cfu.md           # 形成性检查题库
+│   └── chapter-[n]-exit-ticket.md   # 出门卡
 └── progress.md                      # 学习进度（自动保存）
 ```
 
@@ -190,20 +180,16 @@ data/
 **GitHub Copilot** (`.github/prompts/`):
 ```
 .github/prompts/
-├── socrate.outline.prompt.md      # 课程计划生成
-├── socrate.prepare.prompt.md      # 知识点细化
-├── socrate.lesson.prompt.md       # 苏格拉底式教学对话
-├── socrate.practice.prompt.md     # 练习生成
+├── socrate.outline.prompt.md      # 课程计划生成（含 UbD Stage 1 字段）
+├── socrate.lesson.prompt.md       # UbD 备课 + 苏格拉底式教学对话
 └── socrate.check.prompt.md        # 质量验证
 ```
 
 **Claude Code** (`.claude/commands/`):
 ```
 .claude/commands/
-├── socrate.outline.md      # 课程计划生成
-├── socrate.prepare.md      # 知识点细化
-├── socrate.lesson.md       # 苏格拉底式教学对话
-├── socrate.practice.md     # 练习生成
+├── socrate.outline.md      # 课程计划生成（含 UbD 字段）
+├── socrate.lesson.md       # UbD 备课 + 苏格拉底式教学对话
 └── socrate.check.md        # 质量验证
 ```
 

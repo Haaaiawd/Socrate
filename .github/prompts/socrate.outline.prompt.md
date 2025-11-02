@@ -137,6 +137,31 @@ Chapter 2: [Advanced Topic]
 - ✅ "Functions: Definition, Parameters, and Return Values" (cohesive unit, 50min)
 - ✅ "File I/O: Reading and Writing Text Files" (paired operations, 40min)
 
+### Stage 2.5: Add UbD Stage 1 Fields (Required)
+
+At the chapter level, add Backward Design Stage 1 fields so downstream lessons can drive Socratic dialogue from clear goals and evidence:
+
+```yaml
+# In each Chapter metadata block
+enduring_understandings:
+  - "[Big idea that should endure beyond the course]"
+  - "[Another enduring understanding]"
+essential_questions:
+  - "[Question that provokes thought and inquiry]"
+  - "[Another essential question]"
+swbat:  # Students Will Be Able To (measurable, observable verbs)
+  - "[Actionable objective 1]"
+  - "[Actionable objective 2]"
+misconceptions:
+  - "[Common misconception 1]"
+  - "[Common misconception 2]"
+prerequisites: ["[Concept A]", "[Concept B]"]
+```
+
+Notes:
+- Keep objectives observable and assessable (e.g., "explain", "implement", "compare", "debug").
+- Essential questions should fuel discussion, not have a single short answer.
+
 ### Stage 3: Define Knowledge Points
 
 For each KP, specify:
@@ -195,6 +220,23 @@ generated_date: "[YYYY-MM-DD]"
 
 ## Chapter 1: [Foundational Topic]
 
+---
+# UbD Stage 1 (chapter-level)
+enduring_understandings:
+  - "[Enduring idea 1]"
+  - "[Enduring idea 2]"
+essential_questions:
+  - "[EQ 1]"
+  - "[EQ 2]"
+swbat:
+  - "[Students will be able to …]"
+  - "[Students will be able to …]"
+misconceptions:
+  - "[Common misconception 1]"
+  - "[Common misconception 2]"
+prerequisites: ["[Concept A]", "[Concept B]"]
+---
+
 ### Topic 1.1: [Subtopic Name]
 
 **Overview**: [1-2 sentences]
@@ -216,6 +258,8 @@ generated_date: "[YYYY-MM-DD]"
 ## Quality Checks
 
 Before finalizing:
+- [ ] Each chapter includes UbD Stage 1 fields (EU/EQ/SWBAT/Misconceptions/Prerequisites)
+- [ ] KP/activities align with SWBAT; no goal–activity–assessment mismatch
 - [ ] Each KP teaches a **complete, coherent idea** (not over-atomized)
 - [ ] KP estimated time is 30-60min (neither too short nor too long)
 - [ ] No forced splits of tightly coupled concepts
@@ -229,18 +273,17 @@ Before finalizing:
 
 Output:
 ```
-? Outline generated: data/outlines/[topic]-outline.md
+Outline generated: data/outlines/[topic]-outline.md
 
-?? Statistics:
+Statistics:
 - Chapters: X
 - Topics: Y
 - Knowledge Points: Z
 - Estimated Total Time: N hours
 
-?? Next Steps:
-1. Review outline structure
-2. Run /socrate.prepare to create detailed chapter files
-3. Run /socrate.practice to generate exercises
+Next Steps:
+1. Review outline structure and UbD Stage 1 fields (EU/EQ/SWBAT/Misconceptions/Prerequisites)
+2. Run /socrate.lesson to generate a short UbD lesson plan (CFU + Exit Ticket included). Re-run /socrate.lesson to prepare the next section.
 ```
 
 ## Context

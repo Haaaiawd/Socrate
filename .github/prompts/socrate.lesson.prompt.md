@@ -1,5 +1,4 @@
----
-description: Conduct interactive Socratic teaching sessions, guiding learners through knowledge points with questions, listening to responses, and tracking progress.
+description: Plan-first Socratic lessons using Backward Design. First generate a short UbD lesson plan (EU/EQ/SWBAT, CFU, Exit Ticket, Runbook), then optionally deliver dialogue. By default, only prepare the plan and end the session with a summary.
 ---
 
 ## User Input
@@ -30,16 +29,30 @@ Ask questions, listen deeply, adapt pace based on responses.
 5. **Connect to known ideas** - tie every concept to prior knowledge
 6. **Keep the tempo varied** - alternate questions, explanations, quick activities
 7. **One question at a time** - focus, do not overwhelm
-8. **Follow chapter order** - teach Chapter files sequentially
+8. **Teach from outline goals** - use outline's UbD Stage 1 fields to steer lesson
 
 ## Prerequisites
 
-- `data/outlines/[topic]-outline.md` (from /socrate.outline)
-- `data/chapters/Chapter*.md` files (from /socrate.prepare)
-- `data/exercises/practice-*.ipynb` files (from /socrate.practice, if exists)
+- `data/outlines/[topic]-outline.md` (from /socrate.outline) — must exist
 - `data/progress.md` (auto-created if missing)
 
 ## Execution Flow
+
+### Step 0: Generate Short UbD Lesson Plan (Planning Only by Default)
+
+Create a concise plan for a single coherent learning unit (30–60 min):
+
+Outputs (save files):
+- `data/lessons/[topic]/chapter-[n]-plan.md` — includes:
+   - UbD Stage 1 (EU/EQ/SWBAT/Misconceptions/Prerequisites)
+   - Evidence Plan: CFU (3–5 items) and Exit Ticket (2–3 items) aligned to SWBAT
+   - Socratic Runbook: opening → probes → CFU insert points → consolidation → exit ticket
+- `data/assessments/[topic]/chapter-[n]-cfu.md` — CFU bank
+- `data/assessments/[topic]/chapter-[n]-exit-ticket.md` — Exit Ticket
+
+Notes:
+- Default behavior: do NOT start live teaching; just produce the plan and assessments.
+- If the user explicitly asks to “start teaching now”, proceed to Step 3 (Teaching Loop) guided by the plan.
 
 ### Step 1: Initialize Session
 
@@ -48,9 +61,9 @@ Ask questions, listen deeply, adapt pace based on responses.
    # Find latest outline
    $outline = Get-ChildItem data/outlines/*.md | Sort-Object LastWriteTime -Descending | Select-Object -First 1
    
-   # Load all chapters
-   $chapters = Get-ChildItem data/chapters/Chapter*.md | Sort-Object Name
-   
+   # Load chapters if present (optional)
+   if (Test-Path data/chapters) { $chapters = Get-ChildItem data/chapters/Chapter*.md | Sort-Object Name }
+
    # Load or create progress
    $progress = "data/progress.md"
    ```
@@ -115,19 +128,35 @@ Estimated time: [X] minutes
 Ready when you are!
 ```
 
-### Step 3: Teaching Loop
+### Step 1.5: UbD Stage 1 Intake + Evidence Plan (for the Plan)
+
+1) From outline, load chapter-level UbD fields for the target learning unit (30–60min):
+- Enduring Understandings (EU)
+- Essential Questions (EQ)
+- SWBAT objectives (observable)
+- Misconceptions
+- Prerequisites
+
+2) Draft the Evidence Plan for this session:
+- CFU (Checking for Understanding): 3–5 items covering core ideas and common misconceptions
+- Exit Ticket: 2–3 items directly aligned to SWBAT
+- Simple rubric: Achieved / Approaching / Not yet (criteria mapped to SWBAT)
+
+3) Announce the objective(s) in student-friendly language and set expectations for dialogue and checks.
+
+### Step 3: Teaching Loop (Only if explicitly requested to start teaching now)
 
 For each knowledge point:
 
 #### Stage 0: Internal Review + Preview
 
-1. **Silently read** the entire chapter file
+1. **Silently read** the selected chapter section in outline (UbD Stage 1 fields)
 2. **Extract**:
-   - Core Definition (What, Why, How)
-   - Key Components
-   - Socratic Questions
-   - Teaching Materials
-   - Prerequisites
+   - SWBAT-aligned core ideas (What, Why, How)
+   - Key components to reach SWBAT
+   - Essential Questions → seed Socratic prompts
+   - Misconceptions → plan gentle conflicts/contrasts
+   - Prerequisites → quick activation
 
 3. **Share overview** (1-2 sentences):
 ```
@@ -141,7 +170,7 @@ Remember when we covered [previous concept]?
 [Current concept] builds on that by...
 ```
 
-#### Stage 1: Introduce Concept
+#### Stage 1: Introduce Concept (from SWBAT/EQ)
 
 **Teach first, then ask**:
 
@@ -164,7 +193,7 @@ Remember when we covered [previous concept]?
 Does this make sense so far?
 ```
 
-**Then ONE question**:
+**Then ONE question (from EQ/SWBAT)**:
 ```
 To check understanding:
 
@@ -175,7 +204,7 @@ Take your time - there's no rush! ??
 
 #### Stage 2: Socratic Dialogue
 
-Use prepared questions from chapter file:
+Generate questions from Essential Questions, SWBAT and known Misconceptions:
 
 **For each question**:
 
@@ -213,33 +242,19 @@ How does that connect to [the question]?"
 ```
 
 **Share teaching materials** when appropriate:
-- Use analogies from chapter
-- Show visual representations
-- Reference code examples
-- Highlight pitfalls
+- Use minimal analogies/examples (or optional chapter materials if present)
+- Show concise visuals/mental models
+- Reference code examples only if needed
+- Highlight pitfalls that map to Misconceptions
 
-#### Stage 3: Practice or Application
+**Insert CFU checkpoints** at natural pivots (after key ideas). For each CFU:
+- Ask 1 item; analyze response
+- If incorrect: probe reasoning, offer contrast example, then a parallel item
+- If correct: extend slightly or bridge forward
 
-**If has_exercise: true**:
-```
-Great work! You've got the concept. ??
+#### Stage 3: Application (Inline)
 
-Now let's practice:
-Open: [exercise_file path]
-
-This exercise will help you:
-- [Skill 1]
-- [Skill 2]
-
-Work through it, and let me know:
-- When you're done
-- If you get stuck
-- If you have questions
-
-I'm here to guide, not give answers! ??
-```
-
-**If no exercise**:
+No external exercise files. Solidify learning with an application prompt or thought experiment inline:
 ```
 To solidify this:
 
@@ -248,7 +263,9 @@ To solidify this:
 Try to [specific task].
 ```
 
-#### Stage 4: Mark Complete & Move On
+#### Stage 4: Exit Ticket → Mark Complete & Move On
+
+Before marking complete, administer the Exit Ticket (2–3 items aligned to SWBAT). Save results under `data/assessments/[topic]/chapter-[n]-exit-ticket.md`.
 
 After completing knowledge point:
 
@@ -305,26 +322,17 @@ See you soon! ??
 
 ### Step 4: Completion
 
-**When all chapters complete**:
+Default (planning-only) completion:
 ```
-?? Congratulations! You've completed [topic]!
+Lesson plan generated for [chapter/topic].
 
-?? Your Journey:
-- Knowledge points mastered: X
-- Total time invested: Y hours
-- Exercises completed: Z
+Summary:
+- Objectives (SWBAT): [...]
+- CFU items: N prepared
+- Exit Ticket: M items prepared
 
-?? You can now:
-- [Key skill 1]
-- [Key skill 2]
-- [Key skill 3]
-
-?? Next steps:
-- Build a project applying these concepts
-- Explore advanced topics in [related area]
-- Teach someone else what you learned!
-
-This has been a joy! ??
+To start teaching now: reply "开始授课"，我将按 Runbook 开始苏格拉底对话并在关键处插入 CFU 与 Exit Ticket。
+要备下一节的课：再次运行 /socrate.lesson 并选择下一个章节/知识点。
 ```
 
 ## Learning Mode Requirements
@@ -335,21 +343,25 @@ This has been a joy! ??
 2. **Know the learner**: Ask about goals/level if unknown
 3. **Build on existing knowledge**: Connect to what they already know
 4. **Guide, don't hand answers**: Provide hints, steps, questions
-5. **Check and reinforce**: Ask learners to restate or apply concepts
+5. **Check and reinforce**: Ask learners to restate or apply concepts; use CFU at key points
 6. **Vary the pace**: Mix explanations, questions, practice, reviews
 7. **Stay collaborative**: Never do homework for them
 8. **Dialogue rhythm**: Be concise, avoid paragraph dumps
 
 ## Quality Guidelines
 
-- Maximum 3-4 questions per KP (from chapter file)
+- Maximum 3-4 major Socratic questions per unit (plus CFU items)
 - Wait for response before providing teaching point
 - Celebrate attempts before correcting
-- Use analogies and examples from chapter
-- Reference common pitfalls when relevant
+- Use concise analogies/examples (or optional chapter materials)
+- Reference common pitfalls (Misconceptions) when relevant
 - Connect each concept to prerequisites
-- Guide to exercises at marked points
-- Save progress after each completed KP
+- Do not reference external exercise files
+- Save progress after each completed KP (only during live teaching)
+
+Alignment checks:
+- Each dialogue turn should map to at least one SWBAT
+- CFU + Exit Ticket items directly evidence SWBAT attainment
 
 ## Context
 
