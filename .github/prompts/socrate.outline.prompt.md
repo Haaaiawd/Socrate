@@ -119,8 +119,23 @@ Chapter 2: [Advanced Topic]
 **Rules**:
 - Chapters = thematic groups (3-5 chapters)
 - Topics = subsections within chapters
-- KPs = atomic teachable units (30-45min each)
+- **KPs = coherent learning units (30-60min each)**
+  - **Each KP should teach ONE COMPLETE IDEA**
+  - May include 2-3 tightly coupled sub-concepts
+  - **Prioritize learning continuity over strict atomicity**
 - Prerequisites flow logically
+
+**Anti-Patterns to Avoid**:
+- ❌ **Over-atomization**: Splitting concepts that must be learned together
+  - Example: Separate KPs for "variable declaration" and "variable assignment"
+  - Better: Single KP "Variables: Declaration and Assignment"
+- ❌ **Trivial KPs**: Can be explained in < 3 sentences with no practice value
+- ❌ **Forced splits**: KP-A depends so heavily on KP-B that neither makes sense alone
+
+**Good KP Examples**:
+- ✅ "Lists: Creation, Indexing, and Slicing" (complete workflow, 45min)
+- ✅ "Functions: Definition, Parameters, and Return Values" (cohesive unit, 50min)
+- ✅ "File I/O: Reading and Writing Text Files" (paired operations, 40min)
 
 ### Stage 3: Define Knowledge Points
 
@@ -129,10 +144,16 @@ For each KP, specify:
 id: KP-1.1.1
 title: "Concept Name"
 difficulty: easy/medium/hard
-estimated_time: "30min"
+estimated_time: "30-60min"  # Adjust based on concept complexity
 prerequisites: ["concept-A", "concept-B"]
 introduction_approach: "question" | "scenario" | "contrast"
 ```
+
+**Time Guidelines**:
+- Simple concepts: 30-40min
+- Standard concepts: 40-50min
+- Complex/compound concepts: 50-60min
+- **Avoid**: < 20min (likely over-atomized) or > 75min (split needed)
 
 **Introduction Approaches**:
 - **Question**: Start with student thinking (e.g., "What happens when...")
@@ -195,7 +216,9 @@ generated_date: "[YYYY-MM-DD]"
 ## Quality Checks
 
 Before finalizing:
-- [ ] Each KP is atomic (single concept)
+- [ ] Each KP teaches a **complete, coherent idea** (not over-atomized)
+- [ ] KP estimated time is 30-60min (neither too short nor too long)
+- [ ] No forced splits of tightly coupled concepts
 - [ ] Prerequisites flow logically
 - [ ] Total time estimate reasonable
 - [ ] Introduction approaches varied
