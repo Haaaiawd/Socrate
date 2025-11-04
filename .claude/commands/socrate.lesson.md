@@ -1,3 +1,4 @@
+---
 description: Plan-first UbD Stage 1 (EU/EQ/SWBAT only). Produce a concise plan with Enduring Understandings, Essential Questions, and SWBAT. Do not include CFU, Exit Ticket, or Runbook.
 ---
 
