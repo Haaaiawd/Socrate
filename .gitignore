@@ -37,6 +37,7 @@ htmlcov/
 !.vscode/prompts/
 .claude/
 !.claude/commands/
+!.claude/commands/**
 .idea/
 *.swp
 *.swo
@@ -50,11 +51,10 @@ logs/
 # Socrate - Backups and temporary files (DO NOT COMMIT)
 .specify/backups/
 *.bak
-data/progress.md.bak
 
-# Student data (DO NOT COMMIT)
-data/
-!data/.gitkeep
+# Legacy student data folder (if present)
+# data/
+# !data/.gitkeep
 
 # Development and internal docs (DO NOT COMMIT)
 specs/
