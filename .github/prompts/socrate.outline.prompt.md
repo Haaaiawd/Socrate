@@ -30,7 +30,7 @@ Break content into logical learning sequences that invite curiosity.
 .\.specify\scripts\powershell\Generate-Outline.ps1 -Topic "Deep Learning"
 ```
 
-This creates: `data/outlines/deep-learning-outline.md` with structure placeholders.
+This creates: `outlines/deep-learning-outline.md` with structure placeholders.
 
 **Benefits**:
 - User can review/edit structure before AI fills details
@@ -103,17 +103,17 @@ Extract:
 
 ```
 Chapter 1: [Foundational Topic]
-??? Topic 1.1: [Subtopic]
-?   ??? KP-1.1.1: [Concept]
-?   ??? KP-1.1.2: [Concept]
-?   ??? KP-1.1.3: [Concept]
-??? Topic 1.2: [Subtopic]
-    ??? KP-1.2.1: [Concept]
+  Topic 1.1: [Subtopic]
+    - KP-1.1.1: [Concept]
+    - KP-1.1.2: [Concept]
+    - KP-1.1.3: [Concept]
+  Topic 1.2: [Subtopic]
+    - KP-1.2.1: [Concept]
 
 Chapter 2: [Advanced Topic]
-??? Topic 2.1: [Subtopic]
-    ??? KP-2.1.1: [Concept]
-    ??? KP-2.1.2: [Concept]
+  Topic 2.1: [Subtopic]
+    - KP-2.1.1: [Concept]
+    - KP-2.1.2: [Concept]
 ```
 
 **Rules**:
@@ -244,7 +244,7 @@ prerequisites: ["[Concept A]", "[Concept B]"]
 **Knowledge Points**:
 - **KP-1.1.1**: [Concept Name]
   - Difficulty: medium
-  - Time: 30min
+  - Time: 30-60min
   - Prerequisites: [List]
   - Introduction: [Question/Scenario/Contrast approach]
   
@@ -273,7 +273,7 @@ Before finalizing:
 
 Output:
 ```
-Outline generated: data/outlines/[topic]-outline.md
+Outline generated: outlines/[topic]-outline.md
 
 Statistics:
 - Chapters: X

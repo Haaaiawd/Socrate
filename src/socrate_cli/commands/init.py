@@ -60,10 +60,9 @@ def _print_step(step: int, total: int, message: str, status: str = "progress", d
     """
     # Format step counter
     counter = f"[ {step:2d}/{total} ]"
-    
-    # Status symbols
+
+    # Symbols for statuses (used for non-progress lines)
     symbols = {
-        "progress": "",
         "success": "✓",
         "skip": "⏭",
         "error": "✗"
@@ -117,7 +116,7 @@ def init_command(
     no_git: bool = typer.Option(
         False,
         "--no-git",
-        help="Skip Git repository initialization"
+        help="Do not initialize Git repository"
     ),
     force: bool = typer.Option(
         False,
@@ -272,10 +271,8 @@ def _create_directory_structure(project_dir: Path, ai_type: str = "copilot"):
         ".specify/scripts/powershell",
         ".specify/templates",
         ".vscode",
-        "data/outlines",
-        "data/chapters",
-        "data/exercises",
-        "data/progress",
+        "outlines",
+        "lessons",
         "logs"
     ]
     
@@ -293,10 +290,8 @@ def _create_directory_structure(project_dir: Path, ai_type: str = "copilot"):
 def _create_data_directories(project_dir: Path):
     """Create data storage directories with README files"""
     data_dirs = {
-        "data/outlines": "Generated learning outlines will be saved here",
-        "data/chapters": "Individual knowledge point files will be saved here",
-        "data/exercises": "Practice exercises (Jupyter Notebooks) will be saved here",
-        "data/progress": "Student learning progress will be tracked here"
+        "outlines": "Generated learning outlines will be saved here",
+        "lessons": "UbD lesson plans (Runbook, with embedded CFU & Exit Ticket) will be saved here"
     }
     
     for dir_path, description in data_dirs.items():
@@ -337,18 +332,16 @@ teaching:
   patience_level: high  # How many hints before revealing answers
   difficulty_auto_adjust: true  # Adjust difficulty based on student progress
 
-# Data Paths (relative to project root)
+# Paths (relative to project root)
 paths:
-  textbooks: data/textbooks
-  outlines: data/outlines
-  chapters: data/chapters
-  progress: data/progress
+  outlines: outlines
+  lessons: lessons
   templates: .specify/templates
 
 # Logging
 logging:
   level: INFO  # DEBUG, INFO, WARN, ERROR
-  file: logs/socrate.log
+    file: logs/socrate.log
 """
     
     config_path.write_text(default_config, encoding="utf-8")
@@ -365,10 +358,8 @@ def _create_vscode_settings(project_dir: Path):
     vscode_settings = """{
     "chat.promptFilesRecommendations": {
         "socrate.outline": true,
-        "socrate.prepare": true,
-        "socrate.check": true,
-        "socrate.practice": true,
-        "socrate.lesson": true
+        "socrate.lesson": true,
+        "socrate.check": true
     },
     "chat.tools.terminal.autoApprove": {
         ".specify/scripts/bash/": true,
@@ -422,13 +413,7 @@ logs/
 # Socrate - Backups and temporary files (DO NOT COMMIT)
 .specify/backups/
 *.bak
-data/progress.md.bak
-
-# Socrate - Student data (DO NOT COMMIT)
-data/
-!data/.gitkeep
 """
-    
     gitignore_path.write_text(gitignore_content, encoding="utf-8")
 
 
@@ -442,7 +427,7 @@ def _init_git_repository(project_dir: Path, ai_type: str = "copilot"):
     
     if repo:
         # Stage all created files (dynamically based on AI type)
-        paths = [".gitignore", ".specify", "data", "logs"]
+        paths = [".gitignore", ".specify", "outlines", "lessons", "logs"]
         if ai_type == "copilot" or ai_type == "both":
             paths.append(".github")
         if ai_type == "claude" or ai_type == "both":
@@ -487,6 +472,6 @@ def _print_next_steps(project_dir: Path, ai_type: str):
         console.print("     [cyan]Claude Code: Command Palette → /socrate.outline[/cyan]\n")
     
     console.print(f"  [bold]{step_num + 2}.[/bold] Try the complete flow:")
-    console.print("     [dim]/socrate.outline → /socrate.prepare → /socrate.practice → /socrate.lesson[/dim]\n")
+    console.print("     [dim]/socrate.outline → /socrate.lesson → /socrate.check[/dim]\n")
     
     console.print("[dim]Need help? Check README.md for detailed guide[/dim]\n")

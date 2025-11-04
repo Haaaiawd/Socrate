@@ -11,7 +11,7 @@ param(
 
 # Normalize topic to filename
 $topicSlug = $Topic.ToLower() -replace '[^a-z0-9]+', '-' -replace '^-|-$', ''
-$outlineFile = "$ProjectRoot/data/outlines/$topicSlug-outline.md"
+$outlineFile = "$ProjectRoot/outlines/$topicSlug-outline.md"
 
 # Ensure directory exists
 $outlineDir = Split-Path -Parent $outlineFile

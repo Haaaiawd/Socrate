@@ -189,7 +189,7 @@ def update_command(
             
             console.print("[bold cyan]📝 What's New:[/bold cyan]\n")
             console.print("  Check the updated files for new features.")
-            console.print("  Your data/ directory and progress are preserved.\n")
+            console.print("  Your outlines/ and lessons/ directories are preserved.\n")
             
             if backup:
                 console.print("[dim]💾 Backup created in .specify/backups/[/dim]\n")
@@ -220,10 +220,8 @@ def _update_vscode_settings(project_dir: Path) -> bool:
         vscode_settings = {
             "chat.promptFilesRecommendations": {
                 "socrate.outline": True,
-                "socrate.prepare": True,
-                "socrate.check": True,
-                "socrate.practice": True,
-                "socrate.lesson": True
+                "socrate.lesson": True,
+                "socrate.check": True
             },
             "chat.tools.terminal.autoApprove": {
                 ".specify/scripts/bash/": True,
@@ -244,10 +242,8 @@ def _update_vscode_settings(project_dir: Path) -> bool:
         
         socrate_prompts = {
             "socrate.outline": True,
-            "socrate.prepare": True,
-            "socrate.check": True,
-            "socrate.practice": True,
-            "socrate.lesson": True
+            "socrate.lesson": True,
+            "socrate.check": True
         }
         existing_settings["chat.promptFilesRecommendations"].update(socrate_prompts)
         

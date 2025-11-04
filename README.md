@@ -70,11 +70,8 @@ cd my-python-journey
 # 项目结构：
 # my-python-journey/
 #   .github/prompts/          ← AI 提示词模板
-#   data/
-#     outlines/               ← 生成的学习计划（含 UbD 字段）
-#     lessons/                ← 课前简短备课（UbD Lesson Plan/Runbook）
-#     assessments/            ← CFU 与 Exit Ticket（评估证据）
-#     progress.md             ← 学习进度记录
+#   outlines/                 ← 生成的学习计划（含 UbD 字段）
+#   lessons/                  ← 课前简短备课（UbD Lesson Plan/Runbook，内嵌 CFU 与 Exit Ticket）
 ```
 
 ---
@@ -153,18 +150,14 @@ CLI（一次性设置）          AI 提示词（真正的教师）
 所有数据存储在 **Markdown 文件** 中，带 YAML frontmatter：
 
 ```
-data/
-├── outlines/
-│   └── [主题]-outline.md            # 学习计划与章节结构
-├── lessons/
-│   └── chapter-[n]-plan.md          # 单节 UbD 备课（Runbook/CFU/Exit Ticket 链接）
-├── assessments/
-│   ├── chapter-[n]-cfu.md           # 形成性检查题库
-│   └── chapter-[n]-exit-ticket.md   # 出门卡
-└── progress.md                      # 学习进度（自动保存）
+outlines/
+└── [主题]-outline.md            # 学习计划与章节/KP 结构（含 UbD Stage 1）
+
+lessons/
+└── [kp-id]-plan.md             # 单节 UbD 备课（Runbook，内嵌 CFU 与 Exit Ticket）
 ```
 
-**无需数据库！** 所有文件都是人类可读可编辑的。
+**无需数据库！** 所有文件都是人类可读可编辑的；评测内容直接内嵌在 lesson plan 中，无需单独 assessments/ 与 progress 文件。
 
 ---
 

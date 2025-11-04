@@ -14,11 +14,11 @@ completion_percentage: 0
 
 - ✅ KP-X.Y.Z: [Knowledge Point Title] (HH:MM)
   - Key insight: [Brief summary]
-  - Practice: [Completed practice-xxx.ipynb / Reflection: answer to application question]
+  - Assessments: [CFU coverage summary / Exit Ticket status]
 
 - ✅ KP-X.Y.Z: [Knowledge Point Title] (HH:MM)
   - Key insight: [Brief summary]
-  - Practice: [Status]
+  - Assessments: [CFU/Exit Ticket status]
 
 ---
 

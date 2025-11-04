@@ -35,10 +35,10 @@ def copy_templates_to_project(project_dir: Path) -> bool:
         
         # Whitelist: only copy user project templates
         allowed_templates = {
-            "chapter-template.md",
+            "chapter-template.md",  # legacy
             "outline-template.md",
             "progress-template.md",
-            "ipynb-template.ipynb"  # Jupyter Notebook practice template
+            "ipynb-template.ipynb"  # legacy practice template
         }
         
         # Copy filtered template files
@@ -172,9 +172,10 @@ def copy_scripts_to_project(project_dir: Path) -> bool:
         # Core automation scripts that AI uses
         required_scripts = [
             "Generate-Outline.ps1",
-            "Prepare-Chapters.ps1",
-            "Generate-Practice.ps1",
-            "Copy-Chapter-Template.ps1",
+            "Prepare-Lessons.ps1",  # UbD scaffold
+            "Prepare-Chapters.ps1",  # legacy (deprecated)
+            "Generate-Practice.ps1",  # deprecated
+            "Copy-Chapter-Template.ps1",  # deprecated
             "Update-Progress.ps1"
         ]
         
