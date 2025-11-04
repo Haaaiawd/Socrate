@@ -9,6 +9,13 @@ Socrate 是一个基于苏格拉底式对话法的 AI 教学助手 CLI 工具。
 
 ---
 
+## 我们使用了什么（What we use）
+
+- UbD Stage 1 作为唯一备课内容：只包含 EU（Enduring Understandings）/ EQ（Essential Questions）/ SWBAT（Students Will Be Able To）
+- Markdown 文件存储：`outlines/`（大纲）与 `lessons/`（单元备课）
+- 提示词作为事实来源（SoT）：`/.github/prompts`（Copilot），`/.claude/commands`（Claude）语义镜像
+- 极简 CLI：初始化与模板分发；教学逻辑在提示词中
+
 ## ✨ 核心特性
 
 ### 🧠 苏格拉底式教学法
@@ -71,7 +78,7 @@ cd my-python-journey
 # my-python-journey/
 #   .github/prompts/          ← AI 提示词模板
 #   outlines/                 ← 生成的学习计划（含 UbD 字段）
-#   lessons/                  ← 课前简短备课（UbD Lesson Plan/Runbook，内嵌 CFU 与 Exit Ticket）
+#   lessons/                  ← 课前简短备课（仅 EU/EQ/SWBAT）
 ```
 
 ---
@@ -82,7 +89,7 @@ cd my-python-journey
 
 Socrate 同时支持 **GitHub Copilot** 和 **Claude Code**：
 
-#### GitHub Copilot（推荐）
+#### GitHub Copilot
 ```bash
 # 在 VS Code Copilot Chat 中使用
 /socrate.outline          # 生成学习大纲
@@ -108,8 +115,7 @@ socrate init my-learning
 /socrate.outline          # 生成学习大纲
 
 # 3. Lesson 阶段：先备课后上课
-/socrate.lesson           # 生成 UbD 备课文件（SWBAT/CFU/Exit Ticket/Runbook）
-#    若你回复“开始授课”，将按 Runbook 开启苏格拉底对话并在关键处插入 CFU 与 Exit Ticket
+/socrate.lesson           # 生成 UbD 备课文件
 
 # 5. 暂停/恢复
 输入 "pause" 保存进度
@@ -124,8 +130,6 @@ socrate init my-learning
 **方式 2**：从主题学习  
 → `/socrate.outline "Python 装饰器"` → AI 生成大纲
 
-**方式 3**：恢复学习  
-→ `/socrate.lesson` → 选择继续/回顾/重新开始
 
 ---
 
@@ -140,7 +144,7 @@ CLI（一次性设置）          AI 提示词（真正的教师）
 ├── socrate init           ├── /socrate.outline
 │   └── 设置文件夹          │   └── 分析文件/主题 → 创建课程计划
 └── socrate config         ├── /socrate.lesson
-    └── 管理设置            │   └── 先生成 UbD 备课（EU/EQ/SWBAT/证据计划/Runbook），再按需对话授课
+    └── 管理设置            │   └── 先生成 UbD 备课（仅 EU/EQ/SWBAT），再按需在对话中开展教学
                           └── /socrate.check
                               └── 质量验证（可选）
 ```
@@ -154,10 +158,10 @@ outlines/
 └── [主题]-outline.md            # 学习计划与章节/KP 结构（含 UbD Stage 1）
 
 lessons/
-└── [kp-id]-plan.md             # 单节 UbD 备课（Runbook，内嵌 CFU 与 Exit Ticket）
+└── [kp-id]-plan.md             # 单节 UbD 备课
 ```
 
-**无需数据库！** 所有文件都是人类可读可编辑的；评测内容直接内嵌在 lesson plan 中，无需单独 assessments/ 与 progress 文件。
+**无需数据库！** 所有文件都是人类可读可编辑的
 
 ---
 
@@ -211,7 +215,6 @@ socrate/
 │       │   └── update.py  # 更新提示词
 │       └── utils/         # 工具函数
 │           ├── git.py     # Git 操作
-│           ├── progress.py # 进度追踪
 │           └── template.py # 模板处理
 ├── pyproject.toml         # 项目配置
 └── README.md              # 本文件
@@ -233,7 +236,7 @@ Apache License 2.0 - 详见 [LICENSE](LICENSE) 文件
 
 目前适配的 AI 代码助手：
 - GitHub Copilot
-
+- Claude Code
 
 ---
 
