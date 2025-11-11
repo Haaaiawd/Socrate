@@ -9,8 +9,7 @@ import yaml
 from rich.console import Console
 from rich.table import Table
 
-from ..utils.progress import print_success, print_error, print_warning, print_info
-
+from ..utils.progress import print_error, print_info, print_success, print_warning
 
 console = Console()
 app = typer.Typer(help="Manage Socrate configuration")
@@ -28,24 +27,24 @@ def show_config(
     """Display current configuration"""
     target_dir = Path(project_dir) if project_dir else Path.cwd()
     config_path = target_dir / ".specify" / "config.yaml"
-    
+
     if not config_path.exists():
         print_error(f"Configuration not found at {config_path}")
         print_info("Run 'socrate init' to initialize project")
         raise typer.Exit(1)
-    
+
     try:
         with open(config_path, encoding="utf-8") as f:
             config = yaml.safe_load(f)
-        
+
         console.print(f"\n[bold]Configuration:[/bold] {config_path}\n")
-        
+
         # Display config sections
         _display_config_section("Model Settings", config.get("model", {}))
         _display_config_section("Teaching Settings", config.get("teaching", {}))
         _display_config_section("Data Paths", config.get("paths", {}))
         _display_config_section("Logging", config.get("logging", {}))
-        
+
     except Exception as e:
         print_error(f"Failed to read configuration: {e}")
         raise typer.Exit(1)
@@ -65,37 +64,37 @@ def set_config_value(
     """Set a configuration value"""
     target_dir = Path(project_dir) if project_dir else Path.cwd()
     config_path = target_dir / ".specify" / "config.yaml"
-    
+
     if not config_path.exists():
         print_error("Configuration not found")
         raise typer.Exit(1)
-    
+
     try:
         with open(config_path, encoding="utf-8") as f:
             config = yaml.safe_load(f) or {}
-        
+
         # Parse nested key (e.g., "model.name" -> ["model", "name"])
         keys = key.split(".")
-        
+
         # Navigate to nested dict
         current = config
         for k in keys[:-1]:
             if k not in current:
                 current[k] = {}
             current = current[k]
-        
+
         # Convert value type
         typed_value = _convert_value_type(value)
-        
+
         # Set value
         current[keys[-1]] = typed_value
-        
+
         # Write back
         with open(config_path, "w", encoding="utf-8") as f:
             yaml.dump(config, f, default_flow_style=False, allow_unicode=True)
-        
+
         print_success(f"Set {key} = {typed_value}")
-    
+
     except Exception as e:
         print_error(f"Failed to set configuration: {e}")
         raise typer.Exit(1)
@@ -120,32 +119,32 @@ def add_textbook(
     """Register a textbook for teaching"""
     target_dir = Path(project_dir) if project_dir else Path.cwd()
     config_path = target_dir / ".specify" / "config.yaml"
-    
+
     if not config_path.exists():
         print_error("Configuration not found")
         raise typer.Exit(1)
-    
+
     # Validate textbook path
     textbook_file = Path(textbook_path)
     if not textbook_file.exists():
         print_error(f"Textbook file not found: {textbook_path}")
         raise typer.Exit(1)
-    
+
     # Get relative path from project root
     try:
         relative_path = textbook_file.relative_to(target_dir)
     except ValueError:
         # File is outside project, use absolute path
         relative_path = textbook_file.absolute()
-    
+
     try:
         with open(config_path, encoding="utf-8") as f:
             config = yaml.safe_load(f) or {}
-        
+
         # Ensure textbooks section exists
         if "textbooks" not in config:
             config["textbooks"] = []
-        
+
         # Create textbook entry
         textbook_name = name or textbook_file.stem
         textbook_entry = {
@@ -153,27 +152,27 @@ def add_textbook(
             "path": str(relative_path),
             "registered_at": _get_current_timestamp()
         }
-        
+
         # Check if already registered
         existing = next(
             (tb for tb in config["textbooks"] if tb["path"] == str(relative_path)),
             None
         )
-        
+
         if existing:
             print_warning(f"Textbook already registered as '{existing['name']}'")
             raise typer.Exit(0)
-        
+
         # Add textbook
         config["textbooks"].append(textbook_entry)
-        
+
         # Write back
         with open(config_path, "w", encoding="utf-8") as f:
             yaml.dump(config, f, default_flow_style=False, allow_unicode=True)
-        
+
         print_success(f"Registered textbook: {textbook_name}")
         print_info(f"Path: {relative_path}")
-    
+
     except Exception as e:
         print_error(f"Failed to register textbook: {e}")
         raise typer.Exit(1)
@@ -191,39 +190,39 @@ def list_textbooks(
     """List all registered textbooks"""
     target_dir = Path(project_dir) if project_dir else Path.cwd()
     config_path = target_dir / ".specify" / "config.yaml"
-    
+
     if not config_path.exists():
         print_error("Configuration not found")
         raise typer.Exit(1)
-    
+
     try:
         with open(config_path, encoding="utf-8") as f:
             config = yaml.safe_load(f) or {}
-        
+
         textbooks = config.get("textbooks", [])
-        
+
         if not textbooks:
             print_warning("No textbooks registered")
             print_info("Use 'socrate config add-textbook' to register a textbook")
             return
-        
+
         # Create table
         table = Table(title="Registered Textbooks")
         table.add_column("Name", style="cyan")
         table.add_column("Path", style="green")
         table.add_column("Registered", style="yellow")
-        
+
         for tb in textbooks:
             table.add_row(
                 tb.get("name", ""),
                 tb.get("path", ""),
                 tb.get("registered_at", "")
             )
-        
+
         console.print()
         console.print(table)
         console.print()
-    
+
     except Exception as e:
         print_error(f"Failed to list textbooks: {e}")
         raise typer.Exit(1)
@@ -244,7 +243,7 @@ def _convert_value_type(value: str):
         return True
     if value.lower() in ("false", "no"):
         return False
-    
+
     # Number
     try:
         if "." in value:
@@ -252,7 +251,7 @@ def _convert_value_type(value: str):
         return int(value)
     except ValueError:
         pass
-    
+
     # String (default)
     return value
 

@@ -1,27 +1,33 @@
 # progress.py
 """Progress tracking and display for CLI operations"""
 
-import sys
 import time
 from contextlib import contextmanager
 from typing import Optional
 
 from rich.console import Console
-from rich.progress import Progress, SpinnerColumn, TextColumn, BarColumn, TaskProgressColumn, TaskID, TimeElapsedColumn
 from rich.panel import Panel
+from rich.progress import (
+    BarColumn,
+    Progress,
+    SpinnerColumn,
+    TaskID,
+    TaskProgressColumn,
+    TextColumn,
+    TimeElapsedColumn,
+)
 from rich.text import Text
-
 
 console = Console()
 
 
 class StepTracker:
     """Track and display multi-step operation progress"""
-    
+
     def __init__(self, total_steps: int, description: str = "Processing"):
         """
         Initialize step tracker
-        
+
         Args:
             total_steps: Total number of steps
             description: Overall operation description
@@ -31,7 +37,7 @@ class StepTracker:
         self.description = description
         self.progress: Optional[Progress] = None
         self.task_id: Optional[TaskID] = None
-    
+
     def start(self):
         """Start progress tracking"""
         self.progress = Progress(
@@ -48,11 +54,11 @@ class StepTracker:
             self.description,
             total=self.total_steps
         )
-    
+
     def update(self, step_description: str, increment: int = 1):
         """
         Update progress with step completion
-        
+
         Args:
             step_description: Description of completed step
             increment: Number of steps to increment (default: 1)
@@ -67,11 +73,11 @@ class StepTracker:
                 description=f"{emoji} {step_description}"
             )
             time.sleep(0.1)  # Brief animation pause
-    
+
     def complete(self, final_message: Optional[str] = None):
         """
         Complete progress tracking
-        
+
         Args:
             final_message: Optional final message to display
         """
@@ -84,18 +90,18 @@ class StepTracker:
                 )
             time.sleep(0.3)  # Brief pause to show completion
             self.progress.stop()
-            
+
             # Show completion banner
             if not final_message:
                 completion_text = Text()
                 completion_text.append("🎉 ", style="bold yellow")
                 completion_text.append("All steps completed successfully!", style="bold green")
                 console.print(Panel(completion_text, border_style="green", expand=False))
-    
+
     def error(self, error_message: str):
         """
         Stop progress with error message
-        
+
         Args:
             error_message: Error description
         """
@@ -108,18 +114,18 @@ class StepTracker:
 def track_steps(total_steps: int, description: str = "Processing"):
     """
     Context manager for step tracking
-    
+
     Usage:
         with track_steps(5, "Initializing project") as tracker:
             tracker.update("Creating directories")
             # ... do work ...
             tracker.update("Copying templates")
             # ... do work ...
-    
+
     Args:
         total_steps: Total number of steps
         description: Operation description
-        
+
     Yields:
         StepTracker instance
     """
@@ -156,24 +162,24 @@ def print_info(message: str):
 def confirm(prompt: str, default: bool = True) -> bool:
     """
     Ask user for yes/no confirmation
-    
+
     Args:
         prompt: Confirmation prompt
         default: Default value if user just presses Enter
-        
+
     Returns:
         True if user confirmed, False otherwise
     """
     choices = "[Y/n]" if default else "[y/N]"
     console.print(f"{prompt} {choices}: ", end="")
-    
+
     try:
         response = input().strip().lower()
     except (KeyboardInterrupt, EOFError):
         console.print()
         return False
-    
+
     if not response:
         return default
-    
+
     return response in ('y', 'yes')
