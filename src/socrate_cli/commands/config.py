@@ -2,7 +2,7 @@
 """socrate config command: Manage project configuration"""
 
 from pathlib import Path
-from typing import Optional
+from typing import Optional, Union
 
 import typer
 import yaml
@@ -23,7 +23,7 @@ def show_config(
         "-d",
         help="Project directory (default: current directory)"
     )
-):
+) -> None:
     """Display current configuration"""
     target_dir = Path(project_dir) if project_dir else Path.cwd()
     config_path = target_dir / ".specify" / "config.yaml"
@@ -60,7 +60,7 @@ def set_config_value(
         "-d",
         help="Project directory"
     )
-):
+) -> None:
     """Set a configuration value"""
     target_dir = Path(project_dir) if project_dir else Path.cwd()
     config_path = target_dir / ".specify" / "config.yaml"
@@ -115,7 +115,7 @@ def add_textbook(
         "-d",
         help="Project directory"
     )
-):
+) -> None:
     """Register a textbook for teaching"""
     target_dir = Path(project_dir) if project_dir else Path.cwd()
     config_path = target_dir / ".specify" / "config.yaml"
@@ -186,7 +186,7 @@ def list_textbooks(
         "-d",
         help="Project directory"
     )
-):
+) -> None:
     """List all registered textbooks"""
     target_dir = Path(project_dir) if project_dir else Path.cwd()
     config_path = target_dir / ".specify" / "config.yaml"
@@ -236,7 +236,7 @@ def _display_config_section(title: str, data: dict) -> None:
     console.print()
 
 
-def _convert_value_type(value: str):
+def _convert_value_type(value: str) -> Union[str, int, float, bool]:
     """Convert string value to appropriate type"""
     # Boolean
     if value.lower() in ("true", "yes"):

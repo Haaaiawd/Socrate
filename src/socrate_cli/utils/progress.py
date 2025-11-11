@@ -3,7 +3,7 @@
 
 import time
 from contextlib import contextmanager
-from typing import Optional
+from typing import Generator, Optional
 
 from rich.console import Console
 from rich.panel import Panel
@@ -111,7 +111,9 @@ class StepTracker:
 
 
 @contextmanager
-def track_steps(total_steps: int, description: str = "Processing"):
+def track_steps(
+    total_steps: int, description: str = "Processing"
+) -> Generator[StepTracker, None, None]:
     """
     Context manager for step tracking
 

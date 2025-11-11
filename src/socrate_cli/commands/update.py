@@ -50,7 +50,7 @@ def update_command(
         "--backup/--no-backup",
         help="Create backup before updating (default: yes)"
     )
-):
+) -> None:
     """
     Update Socrate project with latest prompts and scripts
 

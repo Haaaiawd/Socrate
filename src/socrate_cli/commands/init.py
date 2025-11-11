@@ -131,7 +131,7 @@ def init_command(
         "--ai-type",
         help="AI assistant type: copilot, claude, or both (interactive if not specified)"
     )
-):
+) -> None:
     """
     Initialize a new Socrate learning project
 
