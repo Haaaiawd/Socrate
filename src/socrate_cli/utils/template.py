@@ -93,11 +93,12 @@ def ensure_templates_exist(project_dir: Path) -> bool:
     Returns:
         True if templates are available
     """
+    # Use the same list as allowed_templates for consistency
     required_templates = [
         "outline-template.md",
-        "chapter-template.md",
+        "chapter-template.md",  # legacy
         "progress-template.md",
-        "teaching-prompt-template.md"
+        "ipynb-template.ipynb"  # legacy practice template
     ]
 
     templates_dir = project_dir / ".specify" / "templates"

@@ -271,7 +271,7 @@ def _update_vscode_settings(project_dir: Path) -> bool:
         return False
 
 
-def _create_backup(project_dir: Path):
+def _create_backup(project_dir: Path) -> None:
     """Create timestamped backup of critical files"""
     import shutil
     from datetime import datetime

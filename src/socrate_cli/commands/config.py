@@ -228,7 +228,7 @@ def list_textbooks(
         raise typer.Exit(1)
 
 
-def _display_config_section(title: str, data: dict):
+def _display_config_section(title: str, data: dict) -> None:
     """Display a configuration section"""
     console.print(f"[bold]{title}:[/bold]")
     for key, value in data.items():

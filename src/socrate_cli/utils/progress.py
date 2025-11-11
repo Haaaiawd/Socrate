@@ -38,7 +38,7 @@ class StepTracker:
         self.progress: Optional[Progress] = None
         self.task_id: Optional[TaskID] = None
 
-    def start(self):
+    def start(self) -> None:
         """Start progress tracking"""
         self.progress = Progress(
             SpinnerColumn(spinner_name="dots"),
@@ -55,7 +55,7 @@ class StepTracker:
             total=self.total_steps
         )
 
-    def update(self, step_description: str, increment: int = 1):
+    def update(self, step_description: str, increment: int = 1) -> None:
         """
         Update progress with step completion
 
@@ -74,7 +74,7 @@ class StepTracker:
             )
             time.sleep(0.1)  # Brief animation pause
 
-    def complete(self, final_message: Optional[str] = None):
+    def complete(self, final_message: Optional[str] = None) -> None:
         """
         Complete progress tracking
 
@@ -98,7 +98,7 @@ class StepTracker:
                 completion_text.append("All steps completed successfully!", style="bold green")
                 console.print(Panel(completion_text, border_style="green", expand=False))
 
-    def error(self, error_message: str):
+    def error(self, error_message: str) -> None:
         """
         Stop progress with error message
 
@@ -139,22 +139,22 @@ def track_steps(total_steps: int, description: str = "Processing"):
         raise
 
 
-def print_success(message: str):
+def print_success(message: str) -> None:
     """Print success message with checkmark"""
     console.print(f"[green]✓[/green] {message}")
 
 
-def print_error(message: str):
+def print_error(message: str) -> None:
     """Print error message with X mark"""
     console.print(f"[red]✗[/red] {message}")
 
 
-def print_warning(message: str):
+def print_warning(message: str) -> None:
     """Print warning message"""
     console.print(f"[yellow]⚠[/yellow] {message}")
 
 
-def print_info(message: str):
+def print_info(message: str) -> None:
     """Print info message"""
     console.print(f"[blue]ℹ[/blue] {message}")
 

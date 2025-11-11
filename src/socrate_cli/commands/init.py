@@ -44,7 +44,13 @@ def _select_ai_type() -> str:
     return choice
 
 
-def _print_step(step: int, total: int, message: str, status: str = "progress", details: str = ""):
+def _print_step(
+    step: int,
+    total: int,
+    message: str,
+    status: str = "progress",
+    details: str = ""
+) -> None:
     """Print a step in the initialization process with consistent formatting
 
     Args:
@@ -83,7 +89,7 @@ def _print_step(step: int, total: int, message: str, status: str = "progress", d
         console.print(f"[{color}]{symbol}[/{color}]{suffix}")
 
 
-def _print_logo():
+def _print_logo() -> None:
     """Print Socrate ASCII logo (no emoji)"""
     logo = r"""
     ╔════════════════════════════════════════════════════╗
@@ -261,7 +267,7 @@ def init_command(
         raise typer.Exit(1)
 
 
-def _create_directory_structure(project_dir: Path, ai_type: str = "copilot"):
+def _create_directory_structure(project_dir: Path, ai_type: str = "copilot") -> None:
     """Create core project directories based on AI type selection"""
     directories = [
         ".specify/scripts/powershell",
@@ -283,7 +289,7 @@ def _create_directory_structure(project_dir: Path, ai_type: str = "copilot"):
         full_path.mkdir(parents=True, exist_ok=True)
 
 
-def _create_data_directories(project_dir: Path):
+def _create_data_directories(project_dir: Path) -> None:
     """Create data storage directories with README files"""
     data_dirs = {
         "outlines": "Generated learning outlines will be saved here",
@@ -306,7 +312,7 @@ def _copy_claude_commands(target_dir: Path) -> bool:
     return copy_claude_commands_to_project(target_dir)
 
 
-def _create_config_file(project_dir: Path):
+def _create_config_file(project_dir: Path) -> None:
     """Create default configuration file"""
     config_path = project_dir / ".specify" / "config.yaml"
 
@@ -343,7 +349,7 @@ logging:
     config_path.write_text(default_config, encoding="utf-8")
 
 
-def _create_vscode_settings(project_dir: Path):
+def _create_vscode_settings(project_dir: Path) -> None:
     """Create VS Code settings.json with Copilot auto-approval configuration"""
     vscode_dir = project_dir / ".vscode"
     settings_path = vscode_dir / "settings.json"
@@ -367,7 +373,7 @@ def _create_vscode_settings(project_dir: Path):
     settings_path.write_text(vscode_settings, encoding="utf-8")
 
 
-def _create_gitignore(project_dir: Path):
+def _create_gitignore(project_dir: Path) -> None:
     """Create .gitignore file with Socrate-specific rules"""
     gitignore_path = project_dir / ".gitignore"
 
@@ -413,7 +419,7 @@ logs/
     gitignore_path.write_text(gitignore_content, encoding="utf-8")
 
 
-def _init_git_repository(project_dir: Path, ai_type: str = "copilot"):
+def _init_git_repository(project_dir: Path, ai_type: str = "copilot") -> None:
     """Initialize Git repository with initial commit"""
     if not check_git_installed():
         console.print("[yellow]✗[/yellow] [dim](Git not found)[/dim]")
@@ -437,7 +443,7 @@ def _init_git_repository(project_dir: Path, ai_type: str = "copilot"):
         console.print("[yellow]✗[/yellow] [dim](failed)[/dim]")
 
 
-def _print_next_steps(project_dir: Path, ai_type: str):
+def _print_next_steps(project_dir: Path, ai_type: str) -> None:
     """Print next steps for user based on AI selection"""
     project_name = project_dir.name
     is_current_dir = project_dir.resolve() == Path.cwd().resolve()
