@@ -4,6 +4,6 @@ Socrate CLI Commands
 This package contains all CLI command implementations.
 """
 
-from . import init, config, update
+from . import config, init, update
 
 __all__ = ["init", "config", "update"]

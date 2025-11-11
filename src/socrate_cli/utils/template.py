@@ -17,22 +17,22 @@ def get_bundled_templates_path() -> Path:
 def copy_templates_to_project(project_dir: Path) -> bool:
     """
     Copy template files to project .specify/templates/ directory
-    
+
     Only copies user-facing templates, excludes spec-kit workflow templates.
-    
+
     Args:
         project_dir: Project root directory
-        
+
     Returns:
         True if successful
     """
     try:
         source_dir = get_bundled_templates_path()
         target_dir = project_dir / ".specify" / "templates"
-        
+
         # Create target directory
         target_dir.mkdir(parents=True, exist_ok=True)
-        
+
         # Whitelist: only copy user project templates
         allowed_templates = {
             "chapter-template.md",  # legacy
@@ -40,7 +40,7 @@ def copy_templates_to_project(project_dir: Path) -> bool:
             "progress-template.md",
             "ipynb-template.ipynb"  # legacy practice template
         }
-        
+
         # Copy filtered template files
         if source_dir.exists():
             for template_file in source_dir.iterdir():
@@ -50,9 +50,9 @@ def copy_templates_to_project(project_dir: Path) -> bool:
         else:
             print(f"Warning: Template directory not found at {source_dir}")
             return False
-        
+
         return True
-    
+
     except Exception as e:
         print(f"Error copying templates: {e}")
         return False
@@ -61,11 +61,11 @@ def copy_templates_to_project(project_dir: Path) -> bool:
 def get_template_path(project_dir: Path, template_name: str) -> Optional[Path]:
     """
     Get path to a specific template file
-    
+
     Args:
         project_dir: Project root directory
         template_name: Template filename (e.g., "outline-template.md")
-        
+
     Returns:
         Path to template file if exists, None otherwise
     """
@@ -76,52 +76,53 @@ def get_template_path(project_dir: Path, template_name: str) -> Optional[Path]:
 def list_templates(project_dir: Path) -> list[str]:
     """List all available template files in project"""
     templates_dir = project_dir / ".specify" / "templates"
-    
+
     if not templates_dir.exists():
         return []
-    
+
     return [f.name for f in templates_dir.glob("*.md")]
 
 
 def ensure_templates_exist(project_dir: Path) -> bool:
     """
     Ensure templates directory exists and has required templates
-    
+
     Args:
         project_dir: Project root directory
-        
+
     Returns:
         True if templates are available
     """
+    # Use the same list as allowed_templates for consistency
     required_templates = [
         "outline-template.md",
-        "chapter-template.md",
+        "chapter-template.md",  # legacy
         "progress-template.md",
-        "teaching-prompt-template.md"
+        "ipynb-template.ipynb"  # legacy practice template
     ]
-    
+
     templates_dir = project_dir / ".specify" / "templates"
-    
+
     if not templates_dir.exists():
         return copy_templates_to_project(project_dir)
-    
+
     # Check if all required templates exist
     missing = [t for t in required_templates if not (templates_dir / t).exists()]
-    
+
     if missing:
         print(f"Missing templates: {', '.join(missing)}")
         return copy_templates_to_project(project_dir)
-    
+
     return True
 
 
 def copy_prompts_to_project(project_dir: Path) -> bool:
     """
     Copy Socrate prompt files to project .github/prompts/ directory
-    
+
     Args:
         project_dir: Project root directory
-        
+
     Returns:
         True if successful
     """
@@ -130,10 +131,10 @@ def copy_prompts_to_project(project_dir: Path) -> bool:
         package_root = Path(__file__).parent.parent.parent.parent
         source_dir = package_root / ".github" / "prompts"
         target_dir = project_dir / ".github" / "prompts"
-        
+
         # Create target directory
         target_dir.mkdir(parents=True, exist_ok=True)
-        
+
         # Copy Socrate prompt files
         if source_dir.exists():
             for prompt_file in source_dir.glob("socrate.*.prompt.md"):
@@ -142,9 +143,9 @@ def copy_prompts_to_project(project_dir: Path) -> bool:
         else:
             print(f"Warning: Prompts directory not found at {source_dir}")
             return False
-        
+
         return True
-    
+
     except Exception as e:
         print(f"Error copying prompts: {e}")
         return False
@@ -153,10 +154,10 @@ def copy_prompts_to_project(project_dir: Path) -> bool:
 def copy_scripts_to_project(project_dir: Path) -> bool:
     """
     Copy PowerShell automation scripts to project .specify/scripts/powershell/ directory
-    
+
     Args:
         project_dir: Project root directory
-        
+
     Returns:
         True if successful
     """
@@ -165,10 +166,10 @@ def copy_scripts_to_project(project_dir: Path) -> bool:
         package_root = Path(__file__).parent.parent.parent.parent
         source_dir = package_root / ".specify" / "scripts" / "powershell"
         target_dir = project_dir / ".specify" / "scripts" / "powershell"
-        
+
         # Create target directory
         target_dir.mkdir(parents=True, exist_ok=True)
-        
+
         # Core automation scripts that AI uses
         required_scripts = [
             "Generate-Outline.ps1",
@@ -178,7 +179,7 @@ def copy_scripts_to_project(project_dir: Path) -> bool:
             "Copy-Chapter-Template.ps1",  # deprecated
             "Update-Progress.ps1"
         ]
-        
+
         # Copy scripts
         if source_dir.exists():
             for script_name in required_scripts:
@@ -189,9 +190,9 @@ def copy_scripts_to_project(project_dir: Path) -> bool:
         else:
             print(f"Warning: Scripts directory not found at {source_dir}")
             return False
-        
+
         return True
-    
+
     except Exception as e:
         print(f"Error copying scripts: {e}")
         return False
@@ -200,10 +201,10 @@ def copy_scripts_to_project(project_dir: Path) -> bool:
 def copy_claude_commands_to_project(project_dir: Path) -> bool:
     """
     Copy Claude Code command files to project .claude/commands/ directory
-    
+
     Args:
         project_dir: Project root directory
-        
+
     Returns:
         True if successful
     """
@@ -212,10 +213,10 @@ def copy_claude_commands_to_project(project_dir: Path) -> bool:
         package_root = Path(__file__).parent.parent.parent.parent
         source_dir = package_root / ".claude" / "commands"
         target_dir = project_dir / ".claude" / "commands"
-        
+
         # Create target directory
         target_dir.mkdir(parents=True, exist_ok=True)
-        
+
         # Copy Socrate command files
         if source_dir.exists():
             for command_file in source_dir.glob("socrate.*.md"):
@@ -224,9 +225,9 @@ def copy_claude_commands_to_project(project_dir: Path) -> bool:
         else:
             print(f"Warning: Claude commands directory not found at {source_dir}")
             return False
-        
+
         return True
-    
+
     except Exception as e:
         print(f"Error copying Claude commands: {e}")
         return False

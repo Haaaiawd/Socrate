@@ -4,12 +4,13 @@ Socrate CLI - AI-powered Socratic teaching system
 Entry point for the socrate command-line interface.
 """
 
-import typer
 from typing import Optional
+
+import typer
 from rich.console import Console
 from rich.panel import Panel
 
-from .commands import init, config, update
+from .commands import config, init, update
 
 app = typer.Typer(
     name="socrate",
@@ -48,7 +49,7 @@ def main(
 ) -> None:
     """
     Socrate - AI-powered Socratic teaching system
-    
+
     Initialize learning repositories and guide students through
     interactive AI-powered Socratic dialogues.
     """
